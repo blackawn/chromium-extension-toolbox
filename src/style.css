@@ -1,0 +1,16 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+@layer base {
+  input {
+    @apply bg-transparent focus:outline-none;
+  }
+}
+
+@layer utilities {
+  [class*="hover\:"] {
+    @apply duration-200 delay-75 cursor-pointer;
+  }
+}

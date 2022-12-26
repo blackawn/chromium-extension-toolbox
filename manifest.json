@@ -1,0 +1,18 @@
+{
+  "manifest_version": 3,
+  "name": "Chromium Extension ToolBox",
+  "version": "1.0.0",
+  "description": "A chromium extension toolBox",
+  "author": "Black awn",
+  "chrome_url_overrides": {
+    "newtab": "index.html"
+  },
+  "permissions": [
+    "tabs",
+    "activeTab",
+    "storage"
+  ],
+  "host_permissions": [
+    "<all_urls>"
+  ]
+}

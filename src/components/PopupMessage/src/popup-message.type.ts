@@ -1,0 +1,10 @@
+export declare type status = '' | 'success' | 'warning' | 'info' | 'error'
+export declare type position =
+    ''
+    | 'top'
+    | 'bottom'
+    | 'center'
+    | 'top-left'
+    | 'top-right'
+    | 'bottom-left'
+    | 'bottom-right'
