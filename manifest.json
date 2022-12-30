@@ -4,8 +4,11 @@
   "version": "1.0.0",
   "description": "A chromium extension toolBox",
   "author": "Black awn",
+  "action": {
+    "default_popup": "popup.html"
+  },
   "chrome_url_overrides": {
-    "newtab": "index.html"
+    "newtab": "home.html"
   },
   "permissions": [
     "tabs",

@@ -1,9 +1,9 @@
-export declare type SearchParams = {
+export declare interface SearchParams {
   key?: string
   value?: string
 }
 
-export declare type SearchEngine = {
+export declare interface SearchEngine {
   name: string
   icon?: string
   networkProtocol?: string

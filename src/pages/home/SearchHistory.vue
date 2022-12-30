@@ -10,7 +10,7 @@ const searchHistoryStore = useHistoryStore()
 const handleHistoryKeywordToSearch = (event: MouseEvent | KeyboardEvent, keyword: string) => {
   if (event.ctrlKey) {
     emits('event-history-to-search', {
-      isCreate: true,
+      newTab: true,
       keyword
     })
   } else {
@@ -24,14 +24,11 @@ const handleHistoryKeywordToSearch = (event: MouseEvent | KeyboardEvent, keyword
 </script>
 
 <template>
-  <div
-    class="flex flex-wrap mt-4"
-  >
-    <span>History search</span>
+  <div class="flex flex-wrap mt-4">
     <span
       v-for="({keyword}) in searchHistoryStore.searchHistory"
       :key="keyword"
-      class="m-1 py-1 px-2 dark:bg-neutral-700 text-sm dark:text-neutral-400 rounded dark:hover:text-neutral-200"
+      class="m-1 py-0.5 px-2 dark:bg-neutral-800 text-sm rounded dark:hover:text-neutral-200"
       @click="(event)=>handleHistoryKeywordToSearch(event,keyword)"
     >
       {{ keyword }}

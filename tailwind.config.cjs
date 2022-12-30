@@ -35,12 +35,16 @@ themeSwapperConfig.themes.push(...colorKey)
 /** @types {import('tailwindcss').Config} */
 module.exports = {
   content: [
-    "./index.html",
+    "./home.html",
     "./src/**/*.{vue,js,ts,jsx,tsx}",
   ],
   darkMode: 'class',
   theme: {
-    extend: {},
+    extend: {
+      width: {
+        '128': '32rem',
+      }
+    }
   },
   plugins: [
     themeSwapper(themeSwapperConfig),

@@ -4,6 +4,9 @@
 
 
 @layer base {
+  body{
+    @apply dark:text-neutral-400
+  }
   input {
     @apply bg-transparent focus:outline-none;
   }
