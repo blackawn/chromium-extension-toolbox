@@ -7,8 +7,21 @@
   "action": {
     "default_popup": "popup.html"
   },
+  "content_scripts": [
+    {
+      "matches": [
+        "<all_urls>"
+      ],
+      "exclude_matches": [
+        "https://tailwindcss.com/*"
+      ],
+      "js": [
+        "content.ts"
+      ]
+    }
+  ],
   "chrome_url_overrides": {
-    "newtab": "home.html"
+    "newtab": "tab.html"
   },
   "permissions": [
     "tabs",

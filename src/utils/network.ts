@@ -11,7 +11,7 @@
  *    .catch((error) => {
  *    });
  */
-export async function useFetchComputerDelay(url: string, controller: AbortController) {
+export async function fetchComputerDelay(url: string, controller: AbortController) {
   const startTime = performance.now();
   const sendFetch = await fetch(url, { signal: controller.signal });
   if (sendFetch.ok) {
@@ -33,7 +33,7 @@ export async function useFetchComputerDelay(url: string, controller: AbortContro
  *    .catch((error) => {
  *    });
  */
-export async function useXHRComputerDelay(url: string, xhr: XMLHttpRequest) {
+export async function XMLHttpRequestComputerDelay(url: string, xhr: XMLHttpRequest) {
   return await new Promise((resolve, reject) => {
     const startTime = performance.now();
     xhr.open('GET', url);

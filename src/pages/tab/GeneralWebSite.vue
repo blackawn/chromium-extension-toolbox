@@ -9,7 +9,7 @@ const generalStore = useGeneralStore();
     <a
       v-for="({ favIconUrl, title, url },i) in generalStore.generalWebSite"
       :key="i"
-      class="flex items-center m-1 py-1 px-1.5 rounded dark:bg-neutral-800 dark:hover:text-neutral-200"
+      class="flex items-center m-1 py-1 px-1.5 rounded dark:bg-neutral-800 dark:hover:text-neutral-200 "
       :href="url"
     >
       <div class="mr-2 w-4 h-4 overflow-hidden rounded-full">
@@ -19,7 +19,7 @@ const generalStore = useGeneralStore();
           alt=""
         >
       </div>
-      <span>{{ title }}</span>
+      <span class="line-clamp-1 max-w-32">{{ title }}</span>
     </a>
   </div>
 </template>

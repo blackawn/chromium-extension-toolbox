@@ -7,8 +7,8 @@ import {
   onUnmounted,
   onMounted,
   PropType
-} from 'vue'
-import type { status, position } from './popup-message.type'
+} from 'vue';
+import type { status, position } from './popup-message.type';
 
 export default defineComponent({
   props: {
@@ -40,7 +40,7 @@ export default defineComponent({
       type: String,
       default: (props: any) => {
         return ['top', 'left-top', 'right-top'].includes(props.position) ?
-          '-translate-y-full opacity-0' : 'translate-y-full opacity-0'
+          '-translate-y-full opacity-0' : 'translate-y-full opacity-0';
       }
     },
     enterToClass: {
@@ -59,7 +59,7 @@ export default defineComponent({
       type: String,
       default: (props: any) => {
         return ['bottom', 'left-bottom', 'right-bottom'].includes(props.position) ?
-          'translate-y-full opacity-0' : '-translate-y-full opacity-0'
+          'translate-y-full opacity-0' : '-translate-y-full opacity-0';
       }
     },
     leaveActiveClass: {
@@ -79,41 +79,41 @@ export default defineComponent({
   },
   setup(props) {
 
-    const visible = ref<boolean>(false)
-    let timer: NodeJS.Timeout | null = null
+    const visible = ref<boolean>(false);
+    let timer: NodeJS.Timeout | null = null;
 
     const diffOffset = computed(() => {
-      return `${props.firstOffset + props.offset}px`
-    })
+      return `${props.firstOffset + props.offset}px`;
+    });
 
     //const state = reactive<PopupMessageState>({})
 
     function setTimer() {
-      clearTimer()
+      clearTimer();
       timer = setTimeout(() => {
-        destroyMessage()
-      }, props.duration)
+        destroyMessage();
+      }, props.duration);
     }
 
     function clearTimer() {
       if (timer) {
-        clearTimeout(timer)
+        clearTimeout(timer);
       }
     }
 
     function destroyMessage() {
-      visible.value = false
+      visible.value = false;
     }
 
 
     onMounted(() => {
-      visible.value = true
-      setTimer()
-    })
+      visible.value = true;
+      setTimer();
+    });
 
     onUnmounted(() => {
-      clearTimer()
-    })
+      clearTimer();
+    });
 
 
     return {
@@ -122,9 +122,9 @@ export default defineComponent({
       diffOffset,
       setTimer,
       clearTimer
-    }
+    };
   }
-})
+});
 </script>
 
 <template>

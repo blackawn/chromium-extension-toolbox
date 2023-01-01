@@ -1,18 +1,17 @@
 <script setup lang="ts">
 import { ref, watchEffect } from 'vue';
 
-import type { SearchEngine } from 'src/types/searchEngine.type';
+import type { SearchEngine } from '~/types/search-engine.type';
 
 import { useHistoryStore } from '~/store/modules/history';
 import { useDefaultStore } from '~/store/modules/default';
-import { useXHRComputerDelay } from '~/uilts/network';
+import { XMLHttpRequestComputerDelay } from '~/utils/network';
 
 import iconGoogle from '~/assets/images/search-engine-google.svg';
 import iconBaidu from '~/assets/images/search-engine-baidu.svg';
 import iconCnBing from '~/assets/images/search-engine-cn-bing.svg';
 import iconBing from '~/assets/images/search-engine-bing.svg';
 import iconSogou from '~/assets/images/search-engine-sogou.svg';
-
 
 const defaultSearchEngine = ref<string>('');
 
@@ -112,7 +111,7 @@ function getSearchEngineNetworkDelay() {
   // new xhr request
   xhr = new XMLHttpRequest();
 
-  useXHRComputerDelay(`${networkProtocol}://${domain}`, xhr)
+  XMLHttpRequestComputerDelay(`${networkProtocol}://${domain}`, xhr)
     .then((delay) => {
       searchBoxPlaceholder.value = delay + 'ms';
     })
@@ -209,12 +208,12 @@ function onToSearchUrl(newTab?: boolean, historyKeyWork?: string) {
   historySearchStore.unShiftHistorySearch(searchKeyWork.value || refSearchInput.value?.value || '');
 }
 
-
 watchEffect(() => {
   if (defaultStore.searchEngine && (!searchKeyWork.value.trim() || !refSearchInput.value?.value.trim())) {
     getSearchEngineNetworkDelay();
   }
 });
+
 
 defineExpose({ onToSearchUrl });
 </script>
