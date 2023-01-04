@@ -1,12 +1,11 @@
 import { defineStore } from 'pinia';
 import { useStorage } from '@vueuse/core';
 import type { SearchHistory, SearchHistorySort } from '~/types/search-history.type';
-import utils from '~/utils/utils';
 
 export const useHistoryStore = defineStore('historyStore', {
   state: () => ({
     searchHistory: useStorage<Array<SearchHistory>>('historySearch', []),
-    sort: useStorage<SearchHistorySort>('historySearchSort', 'time')
+    sort: useStorage<SearchHistorySort>('historySearchSort', 'asc')
   }),
   getters: {},
   actions: {
@@ -24,41 +23,24 @@ export const useHistoryStore = defineStore('historyStore', {
         this.searchHistory[isExist].time = Date.now();
         this.searchHistory.unshift(this.searchHistory.splice(isExist, 1)[0]);
       }
-      if (this.sort === 'time') {
-        this.orderHistorySearchByTime();
-      } else {
-        this.orderHistorySearchByCount();
-      }
+      this.sortHistorySearchByCount(this.sort);
     },
     deleteHistorySearch(index: number) {
       this.searchHistory.splice(index, 1);
     },
-    orderHistorySearchByTime() {
-
-      this.searchHistory.sort((a, b) => {
-        if (a.time === b.time) {
-          if (a.count === b.count) {
-            return a.keyword > b.keyword ? 1 : -1;
-          }
-          return b.count - a.count;
-        }
-        return b.time - a.time;
-      });
-      this.sort = 'time';
-    },
-    orderHistorySearchByCount() {
-
+    sortHistorySearchByCount(order: SearchHistorySort) {
       this.searchHistory.sort((a, b) => {
         if (a.count === b.count) {
           if (a.time === b.time) {
             return a.keyword.localeCompare(b.keyword);
           }
-          return a.time - b.time;
+          return b.time - a.time;
         }
-        return b.count - a.count;
+        return (
+          order === 'desc' ? b.count - a.count : a.count - b.count
+        );
       });
-
-      this.sort = 'count';
+      this.sort = order;
     },
     emptyHistorySearch() {
       this.searchHistory.length = 0;

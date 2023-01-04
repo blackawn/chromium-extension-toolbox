@@ -43,7 +43,7 @@ const handleHistoryKeywordToSearch = (event: MouseEvent | KeyboardEvent, keyword
       <div
         v-for="({keyword},i) in searchHistoryStore.searchHistory"
         :key="keyword"
-        class="relative origin-left"
+        class="relative"
       >
         <div
           class="m-1 py-0.5 px-2 dark:bg-neutral-800 text-sm rounded"

@@ -3,7 +3,7 @@ import { reactive, ref } from 'vue';
 import SearchBox from './SearchBox.vue';
 import SearchHistory from './SearchHistory.vue';
 import GeneralWebSite from './GeneralWebSite.vue';
-import Siting from './Siting.vue';
+import Siting from './Setting.vue';
 
 const is = reactive({
   editGeneralWebsite: false,
@@ -16,6 +16,10 @@ function emitHistoryToSearch(param: any) {
   refSearchBox.value!.onToSearchUrl(param.newTab, param.keyword);
 }
 
+function emitEditGeneralWebSite(value: any) {
+  is.editGeneralWebsite = value;
+}
+
 function emitEditSearchHistory(value: any) {
   is.editSearchHistory = value;
 }
@@ -23,9 +27,14 @@ function emitEditSearchHistory(value: any) {
 </script>
 
 <template>
-  <Siting @emit-edit-search-history="emitEditSearchHistory" />
+  <Siting
+    @emit-edit-general-website="emitEditGeneralWebSite"
+    @emit-edit-search-history="emitEditSearchHistory"
+  />
   <div class="flex flex-col justify-center w-128 h-full">
-    <GeneralWebSite />
+    <GeneralWebSite
+      :edit="is.editGeneralWebsite"
+    />
     <SearchBox ref="refSearchBox" />
     <SearchHistory
       :edit="is.editSearchHistory"

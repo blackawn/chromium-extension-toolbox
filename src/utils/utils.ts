@@ -17,21 +17,16 @@ const utils: Utils = {
   },
   isNumber(num: any): num is number | Number {
     return (typeof num === 'number' || num instanceof Number) && !Number.isNaN(Number(num));
-  }
-  ,
+  },
   isBoolean(boolean: any): boolean is boolean | Boolean {
     return typeof boolean === 'boolean' || boolean instanceof Boolean;
-  }
-  ,
+  },
   isArray(array: any): array is any[] | Array<any> {
     return Array.isArray(array) || array instanceof Array;
-  }
-  ,
+  },
   isObject(object: any): object is object {
     return object !== null && typeof object === 'object' && !Array.isArray(object) && !(object instanceof Array);
-  }
-  ,
-
+  },
   isElement(element: any): element is Element | HTMLDocument {
     return (
       typeof HTMLElement === 'object' ? element instanceof HTMLElement : // DOM2

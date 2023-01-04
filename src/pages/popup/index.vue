@@ -26,7 +26,9 @@ const handleAddToGeneralWebSite = () => {
   generalStore.addToGeneralWebSite({
     favIconUrl: tabFavIconUrl.value,
     title: tabTitle.value,
-    url: tabUrl.value
+    url: tabUrl.value,
+    count: 1,
+    time: Date.now()
   });
 };
 

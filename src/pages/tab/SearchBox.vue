@@ -215,6 +215,12 @@ watchEffect(() => {
 });
 
 
+/*
+['123', 'asd', 'asdx', 'sadw', '啊实打实', 'asdasdw', '阿斯顿', 'asdasd1', '阿斯顿是', '啊圣诞袜'].forEach((item: string) => {
+  historySearchStore.unShiftHistorySearch(item);
+});
+*/
+
 defineExpose({ onToSearchUrl });
 </script>
 
@@ -224,7 +230,7 @@ defineExpose({ onToSearchUrl });
       tabindex="0"
       class="group w-10 select-none cursor-pointer"
     >
-      <transition-group
+      <TransitionGroup
         tag="div"
         :duration="300"
         enter-active-class="absolute duration-300"
@@ -245,7 +251,7 @@ defineExpose({ onToSearchUrl });
             alt=""
           >
         </div>
-      </transition-group>
+      </TransitionGroup>
       <div
         class="absolute top-12 flex mt-0.5 p-2 opacity-0 -z-30
         group-focus:opacity-100 group-focus:z-50 duration-300 dark:bg-neutral-800 rounded space-x-3"

@@ -1,4 +1,4 @@
-export declare type SearchHistorySort = 'time' | 'count';
+export declare type SearchHistorySort = 'desc' | 'asc';
 
 export declare interface SearchHistory {
   keyword: string
