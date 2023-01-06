@@ -1,6 +1,6 @@
 `
 <script setup lang="ts">
-import { useGeneralStore } from '~/store/modules/general';
+import { fast } from '~/store/modules/website';
 
 const props = defineProps({
   edit: {
@@ -9,7 +9,7 @@ const props = defineProps({
   }
 });
 
-const generalStore = useGeneralStore();
+const fastStore = fast();
 
 </script>
 <template>
@@ -18,7 +18,7 @@ const generalStore = useGeneralStore();
       name="general-web-site"
     >
       <div
-        v-for="({ favIconUrl, title, url },i) in generalStore.generalWebSite"
+        v-for="({ favIconUrl, title, url },i) in fastStore.webSite"
         :key="url"
         class="group relative"
         :class="{ 'cursor-text': props.edit }"
@@ -27,7 +27,7 @@ const generalStore = useGeneralStore();
           class="flex items-center m-1 py-1 px-1.5 rounded dark:bg-neutral-800 dark:hover:text-neutral-200 "
           :href="url"
           :class="{'pointer-events-none': props.edit }"
-          @click="generalStore.addToGeneralWebSite(null,i)"
+          @click="fastStore.addToFastWebSite(null,i)"
         >
           <div class="mr-2 w-4 h-4 overflow-hidden rounded-full">
             <img
@@ -42,7 +42,7 @@ const generalStore = useGeneralStore();
           v-show="props.edit"
           type="button"
           class="absolute -top-0.5 -right-1 p-0.5 text-xs rounded-full dark:bg-neutral-700 dark:hover:text-neutral-200"
-          @click="generalStore.deleteGeneralWebSite(i)"
+          @click="fastStore.deleteFastWebSite(i)"
         >
           <span class="sr-only">x</span>
           <svg

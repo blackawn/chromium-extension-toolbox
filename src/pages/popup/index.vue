@@ -1,10 +1,10 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 import { useChromeTabsQuery, useChromeTabsSendMessage } from '~/utils/chrome';
-import { useGeneralStore } from '~/store/modules/general';
+import { fast } from '~/store/modules/website';
 import { onMounted } from 'vue';
 
-const generalStore = useGeneralStore();
+const fastStore = fast();
 
 const tabUrl = ref<string>('');
 const tabTitle = ref<string>('');
@@ -23,7 +23,7 @@ const tabFavIconUrl = ref<string>('');
 */
 
 const handleAddToGeneralWebSite = () => {
-  generalStore.addToGeneralWebSite({
+  fastStore.addToFastWebSite({
     favIconUrl: tabFavIconUrl.value,
     title: tabTitle.value,
     url: tabUrl.value,
@@ -33,7 +33,7 @@ const handleAddToGeneralWebSite = () => {
 };
 
 const handleRemoveFromGeneralWebSite = () => {
-  generalStore.removeFromGeneralWebSite(tabUrl.value);
+  fastStore.removeFromFastWebSite(tabUrl.value);
 };
 
 
@@ -49,9 +49,9 @@ onMounted(() => {
 
 </script>
 <template>
-  <div class="w-96 h-96 p-4">
+  <div class="p-4">
     <button
-      v-if="!generalStore.findGeneralWebSite(tabUrl)"
+      v-if="!fastStore.findFastWebSite(tabUrl)"
       type="button"
       class="flex items-center text-lg dark:text-neutral-400"
       @click="handleAddToGeneralWebSite"
@@ -100,7 +100,7 @@ onMounted(() => {
           stroke-width="16"
         />
       </svg>
-      <span class="ml-2 text-sm">Add To General Website</span>
+      <span class="ml-2 text-sm whitespace-nowrap">Add To Fast Website</span>
     </button>
     <button
       v-else
@@ -141,7 +141,7 @@ onMounted(() => {
           stroke-width="16"
         />
       </svg>
-      <span class="ml-2 text-sm">Remove From General Website</span>
+      <span class="ml-2 text-sm whitespace-nowrap">Remove From General Website</span>
     </button>
   </div>
 </template>

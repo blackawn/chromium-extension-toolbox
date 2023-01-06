@@ -41,8 +41,14 @@ module.exports = {
   darkMode: 'class',
   theme: {
     extend: {
+      padding: {
+        '0.75': '0.1875rem',
+      },
       width: {
         '128': '32rem',
+      },
+      height: {
+        '5.5': '1.375rem',
       },
       maxWidth: {
         '4': '1rem',

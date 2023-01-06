@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue';
-import { useHistoryStore } from '~/store/modules/history';
+import { history } from '~/store/modules/history';
 
 const props = defineProps({
   edit: {
@@ -13,7 +13,7 @@ const emits = defineEmits([
   'emit-history-to-search'
 ]);
 
-const searchHistoryStore = useHistoryStore();
+const historyStore = history();
 
 
 const handleHistoryKeywordToSearch = (event: MouseEvent | KeyboardEvent, keyword: string) => {
@@ -41,7 +41,7 @@ const handleHistoryKeywordToSearch = (event: MouseEvent | KeyboardEvent, keyword
       name="search-history"
     >
       <div
-        v-for="({keyword},i) in searchHistoryStore.searchHistory"
+        v-for="({keyword},i) in historyStore.search"
         :key="keyword"
         class="relative"
       >
@@ -56,7 +56,7 @@ const handleHistoryKeywordToSearch = (event: MouseEvent | KeyboardEvent, keyword
           v-show="props.edit"
           type="button"
           class="absolute -top-0.5 -right-1 p-0.5 text-xs rounded-full dark:bg-neutral-700 dark:hover:text-neutral-200"
-          @click="searchHistoryStore.deleteHistorySearch(i)"
+          @click="historyStore.deleteHistorySearch(i)"
         >
           <span class="sr-only">x</span>
           <svg

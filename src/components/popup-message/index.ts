@@ -1,3 +1,3 @@
-import PopupMessage from './src/popup-message'
-export default PopupMessage
+import PopupMessage from './src/popup-message';
+export default PopupMessage;
 

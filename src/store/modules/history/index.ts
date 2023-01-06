@@ -2,34 +2,34 @@ import { defineStore } from 'pinia';
 import { useStorage } from '@vueuse/core';
 import type { SearchHistory, SearchHistorySort } from '~/types/search-history.type';
 
-export const useHistoryStore = defineStore('historyStore', {
+export const history = defineStore('historyStore', {
   state: () => ({
-    searchHistory: useStorage<Array<SearchHistory>>('historySearch', []),
-    sort: useStorage<SearchHistorySort>('historySearchSort', 'asc')
+    search: useStorage<Array<SearchHistory>>('historySearchStore', []),
+    searchSort: useStorage<SearchHistorySort>('historySearchSortStore', 'asc')
   }),
   getters: {},
   actions: {
     unShiftHistorySearch(keyword: string) {
-      const isExist = this.searchHistory.findIndex((item) => item.keyword === keyword);
+      const isExist = this.search.findIndex((item) => item.keyword === keyword);
 
       if (isExist === -1) {
-        this.searchHistory.unshift({
+        this.search.unshift({
           keyword,
           count: 1,
           time: Date.now()
         });
       } else {
-        this.searchHistory[isExist].count += 1;
-        this.searchHistory[isExist].time = Date.now();
-        this.searchHistory.unshift(this.searchHistory.splice(isExist, 1)[0]);
+        this.search[isExist].count += 1;
+        this.search[isExist].time = Date.now();
+        this.search.unshift(this.search.splice(isExist, 1)[0]);
       }
-      this.sortHistorySearchByCount(this.sort);
+      this.sortHistorySearchByCount(this.searchSort);
     },
     deleteHistorySearch(index: number) {
-      this.searchHistory.splice(index, 1);
+      this.search.splice(index, 1);
     },
     sortHistorySearchByCount(order: SearchHistorySort) {
-      this.searchHistory.sort((a, b) => {
+      this.search.sort((a, b) => {
         if (a.count === b.count) {
           if (a.time === b.time) {
             return a.keyword.localeCompare(b.keyword);
@@ -40,10 +40,10 @@ export const useHistoryStore = defineStore('historyStore', {
           order === 'desc' ? b.count - a.count : a.count - b.count
         );
       });
-      this.sort = order;
+      this.searchSort = order;
     },
     emptyHistorySearch() {
-      this.searchHistory.length = 0;
+      this.search.length = 0;
     }
   }
 });

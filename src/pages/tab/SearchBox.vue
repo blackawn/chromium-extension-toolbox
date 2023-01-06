@@ -3,8 +3,10 @@ import { ref, watchEffect } from 'vue';
 
 import type { SearchEngine } from '~/types/search-engine.type';
 
-import { useHistoryStore } from '~/store/modules/history';
-import { useDefaultStore } from '~/store/modules/default';
+import { useChromeStorageLocalSet } from '~/utils/chrome';
+
+import { history } from '~/store/modules/history';
+import { generic } from '~/store/modules/generic';
 import { XMLHttpRequestComputerDelay } from '~/utils/network';
 
 import iconGoogle from '~/assets/images/search-engine-google.svg';
@@ -86,9 +88,9 @@ const searchBoxPlaceholder = ref<string>('');
 
 const isKeydownGroupKey = ref<boolean>(false);
 
-const historySearchStore = useHistoryStore();
+const historyStore = history();
 
-const defaultStore = useDefaultStore();
+const genericStore = generic();
 
 let xhr: null | XMLHttpRequest = null;
 
@@ -98,8 +100,10 @@ let xhr: null | XMLHttpRequest = null;
  */
 function getSearchEngineNetworkDelay() {
 
+  if (!genericStore.searchEnginePreflight) return;
+
   const currentSearchEngine = defaultSearchEngines.value.find(
-    (item) => item.name === defaultStore.searchEngine
+    (item) => item.name === genericStore.searchEngine
   );
 
 
@@ -121,6 +125,10 @@ function getSearchEngineNetworkDelay() {
 }
 
 
+historyStore.search.forEach((item) => {
+  useChromeStorageLocalSet(item.keyword, item.count);
+});
+
 /**
  * @description: SearchBar keydown event
  * @param event
@@ -134,10 +142,10 @@ function onSearchBoxKeydown(event: KeyboardEvent) {
     isKeydownGroupKey.value = true;
 
     const currentSearchEngine = defaultSearchEngines.value.find(
-      (item) => item.name === defaultStore.searchEngine
+      (item) => item.name === genericStore.searchEngine
     );
 
-    defaultStore.updateDefaultSearchEngine((
+    genericStore.reviseDefaultSearchEngine((
       currentSearchEngine
         ? defaultSearchEngines.value[
           (defaultSearchEngines.value.indexOf(currentSearchEngine) + 1) %
@@ -184,7 +192,7 @@ function onToSearchUrl(newTab?: boolean, historyKeyWork?: string) {
 
   // get current search engine
   const currentSearchEngine = defaultSearchEngines.value.find(
-    (item) => item.name === defaultStore.searchEngine
+    (item) => item.name === genericStore.searchEngine
   );
 
   const networkProtocol = currentSearchEngine?.networkProtocol;
@@ -205,11 +213,11 @@ function onToSearchUrl(newTab?: boolean, historyKeyWork?: string) {
     window.location.href = finalUrl;
   }
 
-  historySearchStore.unShiftHistorySearch(searchKeyWork.value || refSearchInput.value?.value || '');
+  historyStore.unShiftHistorySearch(searchKeyWork.value || refSearchInput.value?.value || '');
 }
 
 watchEffect(() => {
-  if (defaultStore.searchEngine && (!searchKeyWork.value.trim() || !refSearchInput.value?.value.trim())) {
+  if (genericStore.searchEngine && (!searchKeyWork.value.trim() || !refSearchInput.value?.value.trim())) {
     getSearchEngineNetworkDelay();
   }
 });
@@ -220,6 +228,7 @@ watchEffect(() => {
   historySearchStore.unShiftHistorySearch(item);
 });
 */
+
 
 defineExpose({ onToSearchUrl });
 </script>
@@ -241,7 +250,7 @@ defineExpose({ onToSearchUrl });
       >
         <div
           v-for="item in defaultSearchEngines"
-          v-show="item.name === defaultStore.searchEngine"
+          v-show="item.name === genericStore.searchEngine"
           :key="item.name"
           class="w-10 h-10 p-2 rounded-full dark:hover:bg-neutral-700"
         >
@@ -260,7 +269,7 @@ defineExpose({ onToSearchUrl });
           v-for="({name,icon}) in defaultSearchEngines"
           :key="name"
           class="w-8 h-8 p-1.5 rounded-full dark:hover:bg-neutral-700"
-          @click="(defaultSearchEngine = name);(defaultStore.updateDefaultSearchEngine(name))"
+          @click="(defaultSearchEngine = name);(genericStore.reviseDefaultSearchEngine(name))"
         >
           <img
             :src="icon"
@@ -277,7 +286,7 @@ defineExpose({ onToSearchUrl });
       autofocus
       class="flex-1 h-full px-1 py-2.5 text-base dark:caret-neutral-400 dark:placeholder-neutral-700"
       :class="{'dark:placeholder-rose-800': ['Error','Timeout'].includes(searchBoxPlaceholder)}"
-      :placeholder="searchBoxPlaceholder"
+      :placeholder="(genericStore.searchEnginePreflight? searchBoxPlaceholder:'')"
       @keydown="onSearchBoxKeydown"
       @keyup="onSearchBarKeyup"
     >

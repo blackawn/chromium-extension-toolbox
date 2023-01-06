@@ -2,11 +2,11 @@
 import { reactive, ref } from 'vue';
 import SearchBox from './SearchBox.vue';
 import SearchHistory from './SearchHistory.vue';
-import GeneralWebSite from './GeneralWebSite.vue';
+import FastWebSite from './FastWebSite.vue';
 import Siting from './Setting.vue';
 
 const is = reactive({
-  editGeneralWebsite: false,
+  editFastWebsite: false,
   editSearchHistory: false
 });
 
@@ -17,7 +17,7 @@ function emitHistoryToSearch(param: any) {
 }
 
 function emitEditGeneralWebSite(value: any) {
-  is.editGeneralWebsite = value;
+  is.editFastWebsite = value;
 }
 
 function emitEditSearchHistory(value: any) {
@@ -32,8 +32,8 @@ function emitEditSearchHistory(value: any) {
     @emit-edit-search-history="emitEditSearchHistory"
   />
   <div class="flex flex-col justify-center w-128 h-full">
-    <GeneralWebSite
-      :edit="is.editGeneralWebsite"
+    <FastWebSite
+      :edit="is.editFastWebsite"
     />
     <SearchBox ref="refSearchBox" />
     <SearchHistory
