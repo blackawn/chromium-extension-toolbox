@@ -2,7 +2,7 @@
   "manifest_version": 3,
   "name": "Chromium Extension ToolBox",
   "version": "1.0.0",
-  "description": "A chromium extension toolBox",
+  "description": "A chromium extension toolbox",
   "author": "Black awn",
   "action": {
     "default_popup": "popup.html"
@@ -17,6 +17,14 @@
       ]
     }
   ],
+  "externally_connectable": {
+    "matches": [
+      "<all_urls>"
+    ]
+  },
+  "background": {
+    "service_worker": "background.ts"
+  },
   "chrome_url_overrides": {
     "newtab": "index.html"
   },

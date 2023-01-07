@@ -21,4 +21,3 @@ export function setElementPropertyValue(element: HTMLElement, styleValue: Record
     element.style.setProperty(key, ((styleValue)[key]));
   }
 }
-

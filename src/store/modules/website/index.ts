@@ -1,21 +1,21 @@
 import { defineStore } from 'pinia';
 import { useStorage } from '@vueuse/core';
-import type { fastWebSite, fastWebSiteSort } from '~/types/fast-website.type';
+import type { FastWebsite, FastWebsiteSort } from '~/types/fast-website.type';
 import utils from '~/utils/utils';
 
 export const fast = defineStore('fastStore', {
   state: () => ({
-    webSite: useStorage<Array<fastWebSite>>('fastWebSiteStore', []),
-    webSiteSort: useStorage<fastWebSiteSort>('fastWebSiteSortStore', 'desc')
+    webSite: useStorage<Array<FastWebsite>>('fastWebSiteStore', []),
+    webSiteSort: useStorage<FastWebsiteSort>('fastWebSiteSortStore', 'desc')
   }),
   getters: {
-    findFastWebSite: (state) => (url: string) => {
+    findFastWebsite: (state) => (url: string) => {
       return state.webSite.find((item) => item.url === url);
     }
   },
   actions: {
 
-    addToFastWebSite(website: fastWebSite, index?: number) {
+    addToFastWebsite(website: FastWebsite | null, index?: number) {
       if (utils.isObject(website)) {
         this.webSite.push(website);
       }
@@ -24,9 +24,9 @@ export const fast = defineStore('fastStore', {
         this.webSite[index].count += 1;
       }
 
-      this.sortFastWebSiteByCount(this.webSiteSort);
+      this.sortFastWebsiteByCount(this.webSiteSort);
     },
-    sortFastWebSiteByCount(order: fastWebSiteSort) {
+    sortFastWebsiteByCount(order: FastWebsiteSort) {
       this.webSite.sort((a, b) => {
         if (a.count === b.count) {
           if (a.time === b.time) {
@@ -41,13 +41,13 @@ export const fast = defineStore('fastStore', {
 
       this.webSiteSort = order;
     },
-    removeFromFastWebSite(url: string) {
+    removeFromFastWebsite(url: string) {
       this.webSite = this.webSite.filter((item) => item.url !== url);
     },
-    deleteFastWebSite(index: number) {
+    deleteFastWebsite(index: number) {
       this.webSite.splice(index, 1);
     },
-    emptyFastWebSite() {
+    emptyFastWebsite() {
       this.webSite.length = 0;
     }
   }

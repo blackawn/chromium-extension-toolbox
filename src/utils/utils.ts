@@ -6,6 +6,7 @@ export declare interface Utils {
     isArray: (array: any) => array is any[] | Array<any>,
     isObject: (object: any) => object is object,
     isElement: (element: any) => element is Element | HTMLDocument,
+    isEmptyValue: (value: any) => boolean,
     generateRandomInt: (min: number, max: number) => number;
 }
 
@@ -34,6 +35,18 @@ const utils: Utils = {
                 typeof element === 'object' && true && element.nodeType === 1 &&
                 typeof element.nodeName === 'string'
     );
+  },
+  isEmptyValue(value: any): boolean {
+    if (Array.isArray(value)) {
+      return value.length === 0;
+    }
+    if (typeof value === 'object') {
+      return Object.keys(value).length === 0;
+    }
+    if (typeof value === 'string') {
+      return value.trim() === '';
+    }
+    return false;
   },
   // extract
   extractNumbersFromString(string: string): Array<number> {

@@ -7,7 +7,7 @@ import Switch from '~/components/switch/index.vue';
 import { getLocalStorage, setLocalStorage, removeLocalStorage } from '~/utils/local-storage';
 
 const emits = defineEmits([
-  'emit-edit-website-website',
+  'emit-edit-general-website',
   'emit-edit-search-history'
 ]);
 
@@ -29,7 +29,7 @@ const themeMode = ref<ThemeMode>('');
 
 const handleEditFastWebsite = () => {
   is.editFastWebsite = !is.editFastWebsite;
-  emits('emit-edit-website-website', is.editFastWebsite);
+  emits('emit-edit-general-website', is.editFastWebsite);
 };
 
 const handleEditSearchHistory = () => {
@@ -110,7 +110,7 @@ onBeforeMount(async () => {
     </div>
     <div
       v-show="is.visibleMenu"
-      class="absolute right-0 p-3 rounded-md dark:bg-neutral-800 space-y-2 select-none"
+      class="absolute right-0 z-50 p-3 rounded-md dark:bg-neutral-800 space-y-2 select-none"
     >
       <div>
         <h6 class="mb-2.5 dark:text-neutral-500 text-sm">
@@ -398,7 +398,7 @@ onBeforeMount(async () => {
               <button
                 type="button"
                 class="text-xl dark:text-neutral-600 dark:hover:text-neutral-400 pointer-events-none"
-                @click="fastStore.emptyFastWebSite()"
+                @click="fastStore.emptyFastWebsite()"
               >
                 <span class="sr-only">empty</span>
                 <svg
@@ -473,7 +473,7 @@ onBeforeMount(async () => {
                 type="button"
                 class="text-xl dark:hover:text-neutral-400"
                 :class="( fastStore.webSiteSort === 'asc'?'dark:text-neutral-400':'dark:text-neutral-600' )"
-                @click="fastStore.sortFastWebSiteByCount('asc')"
+                @click="fastStore.sortFastWebsiteByCount('asc')"
               >
                 <span class="sr-only">asc</span>
                 <svg
@@ -543,7 +543,7 @@ onBeforeMount(async () => {
                 type="button"
                 class="text-xl dark:hover:text-neutral-400"
                 :class="( fastStore.webSiteSort === 'desc'?'dark:text-neutral-400':'dark:text-neutral-600' )"
-                @click="fastStore.sortFastWebSiteByCount('desc')"
+                @click="fastStore.sortFastWebsiteByCount('desc')"
               >
                 <span class="sr-only">desc</span>
                 <svg

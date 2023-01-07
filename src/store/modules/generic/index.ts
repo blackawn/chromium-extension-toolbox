@@ -11,8 +11,8 @@ export const generic = defineStore('genericStore', {
     reviseDefaultSearchEngine(searchEngine: string) {
       this.searchEngine = searchEngine;
     },
-    reviseSearchEnginePreflight(is: boolean) {
-      this.searchEnginePreflight = is;
+    reviseSearchEnginePreflight(status: boolean) {
+      this.searchEnginePreflight = status;
     }
   }
 });

@@ -13,7 +13,7 @@
 }
 
 @layer utilities {
-  [class*="hover\:"] {
+  [class*="hover\:"]:not([class*="group"]) {
     @apply duration-200 delay-75 cursor-pointer;
   }
 }

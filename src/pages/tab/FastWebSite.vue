@@ -27,7 +27,7 @@ const fastStore = fast();
           class="flex items-center m-1 py-1 px-1.5 rounded dark:bg-neutral-800 dark:hover:text-neutral-200 "
           :href="url"
           :class="{'pointer-events-none': props.edit }"
-          @click="fastStore.addToFastWebSite(null,i)"
+          @click="fastStore.addToFastWebsite(null,i)"
         >
           <div class="mr-2 w-4 h-4 overflow-hidden rounded-full">
             <img
@@ -42,7 +42,7 @@ const fastStore = fast();
           v-show="props.edit"
           type="button"
           class="absolute -top-0.5 -right-1 p-0.5 text-xs rounded-full dark:bg-neutral-700 dark:hover:text-neutral-200"
-          @click="fastStore.deleteFastWebSite(i)"
+          @click="fastStore.deleteFastWebsite(i)"
         >
           <span class="sr-only">x</span>
           <svg
@@ -60,7 +60,7 @@ const fastStore = fast();
           </svg>
         </button>
         <button
-          class="absolute -bottom-0.5 -right-1 p-0.5 opacity-0 text-xs rounded-full dark:bg-neutral-700 dark:hover:text-neutral-200"
+          class="absolute -bottom-0.5 -right-1 p-0.5 opacity-0 rounded-full dark:bg-neutral-700 text-xs dark:hover:text-neutral-200 duration-300"
           :class="{ 'group-hover:opacity-100': props.edit }"
         >
           <svg

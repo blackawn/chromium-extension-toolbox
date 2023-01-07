@@ -1,32 +1,39 @@
-import { useChromeTabsOnMessage, useChromeStorageLocalGet } from '~/utils/chrome';
+import {
+  useChromeStorageLocalGet,
+  useChromeRuntimeOnMessage
+} from '~/utils/chrome';
 import { ChromeMessage } from '~/types/chrome.type';
 import { getElementPropertyValue, setElementPropertyValue } from '~/utils/element';
 import utils from '~/utils/utils';
 
 
-//const d = utils.extractNumbersFromString(getElementPropertyValue(document.body, 'filter') as string);
-
-function setWebSiteFilter(value: string) {
+function setWebsiteFilter(value: string) {
   setElementPropertyValue(document.documentElement, {
     filter: value
   });
 }
 
-function initContentSetting(){
+function useWebsiteFilter(status: boolean) {
+  if (status) {
+    setWebsiteFilter('invert(1)');
+  } else {
+    setWebsiteFilter('');
+  }
+}
+
+function initScriptLoading() {
   // get global is filter on
-  useChromeStorageLocalGet('allFilterInvert').then((data) => {
-    console.log(data);
-  });
+  useChromeStorageLocalGet('globalFilterInvert')
+    .then((result) => {
+      useWebsiteFilter(result.globalFilterInvert);
+    });
 }
 
 
-
-//setWebSiteFilter('invert(1)');
-
-
-useChromeTabsOnMessage((message: ChromeMessage) => {
-  if (message.from === 'popup' && message.content.filterInvert) {
-    const d = utils.extractNumbersFromString(getElementPropertyValue(document.body, 'filter') as string);
-    console.log(d);
+useChromeRuntimeOnMessage((message) => {
+  if (message.from === 'popup' && message.content.hasOwnProperty('globalFilterInvert')) {
+    useWebsiteFilter(message.content.globalFilterInvert);
   }
 });
+
+initScriptLoading();

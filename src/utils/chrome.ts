@@ -1,11 +1,8 @@
 import type { ChromeMessage } from '~/types/chrome.type';
+import utils from '~/utils/utils';
 
-async function useChromeTabsQuery() {
-  return chrome.tabs.query(
-    {
-      active: true,
-      currentWindow: true
-    });
+async function useChromeTabsQuery(queryInfo: chrome.tabs.QueryInfo) {
+  return chrome.tabs.query(queryInfo);
 }
 
 async function useChromeTabsCreate(url: string) {
@@ -17,8 +14,18 @@ async function useChromeTabsUpdate(id: number, url: string) {
 }
 
 
-async function useChromeStorageLocalSet(key: string, value: any) {
-  return await chrome.storage.local.set({ [key]: value });
+async function useChromeStorageLocalSet(items: object | string, value?: any) {
+  if (utils.isObject(items)){
+    const setPromises = [];
+    for (const itemsKey in items) {
+      setPromises.push(chrome.storage.local.set({
+        [itemsKey]: (items as any)[itemsKey]
+      }));
+    }
+    await Promise.all(setPromises);
+  } else {
+    return await chrome.storage.local.set({ [items]: value });
+  }
 }
 
 async function useChromeStorageLocalGet(key?: string) {
@@ -67,7 +74,12 @@ async function useChromeTabsSendMessage(
   );
 }
 
-function useChromeTabsOnMessage(
+
+async function useChromeRuntimeSendMessage(message: ChromeMessage) {
+  return await chrome.runtime.sendMessage(message);
+}
+
+async function useChromeRuntimeOnMessage(
   callback: (message: ChromeMessage, sender?: chrome.runtime.MessageSender) => void) {
   return chrome.runtime.onMessage.addListener((message, sender) => {
     callback(message, sender);
@@ -88,5 +100,6 @@ export {
   useChromeStorageSyncClear,
   useChromeTabsOnUpdated,
   useChromeTabsSendMessage,
-  useChromeTabsOnMessage
+  useChromeRuntimeSendMessage,
+  useChromeRuntimeOnMessage
 };

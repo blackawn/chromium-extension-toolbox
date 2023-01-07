@@ -124,11 +124,6 @@ function getSearchEngineNetworkDelay() {
     });
 }
 
-
-historyStore.search.forEach((item) => {
-  useChromeStorageLocalSet(item.keyword, item.count);
-});
-
 /**
  * @description: SearchBar keydown event
  * @param event

@@ -1,5 +1,6 @@
 import { ref, isRef, onMounted, onUnmounted, watch } from 'vue';
 import type { Ref } from 'vue';
+import utils from '~/utils/utils';
 
 export function useElementResizeObserver(element: Ref<HTMLElement | null> | HTMLElement) {
 
@@ -24,7 +25,10 @@ export function useElementResizeObserver(element: Ref<HTMLElement | null> | HTML
   });
 
   function resizeObserver(element: Ref<HTMLElement | null> | HTMLElement) {
-    useResizeObserver.observe((isRef(element) ? element.value : element) as HTMLElement);
+    const elem = isRef(element) ? element.value : element;
+    if (utils.isElement(elem)) {
+      useResizeObserver.observe(elem);
+    }
   }
 
   function unResizeObserver(element: Ref<HTMLElement | null> | HTMLElement) {
