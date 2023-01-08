@@ -5,7 +5,6 @@ import {
 import { ChromeMessage } from '~/types/chrome.type';
 import { setElementPropertyValue } from '~/utils/element';
 
-
 function setWebsiteFilter(value: string) {
   setElementPropertyValue(document.documentElement, {
     filter: value
@@ -20,17 +19,17 @@ function useWebsiteFilter(status: boolean) {
   }
 }
 
-async function initScriptLoading() {
+function initScriptLoading() {
+  useChromeStorageLocalGet('scopeFilterInvert')
+    .then((result) => {
+      useWebsiteFilter((result || []).includes(window.location.href));
+    });
 
-  const { scopeFilterInvert } = await useChromeStorageLocalGet();
-
-  return useWebsiteFilter((scopeFilterInvert || []).includes(window.location.href));
+  useChromeRuntimeOnMessage((message: ChromeMessage) => {
+    if (message.from === 'popup' && message.content.hasOwnProperty('scopeFilterInvert')) {
+      useWebsiteFilter(message.content.scopeFilterInvert);
+    }
+  });
 }
 
-useChromeRuntimeOnMessage((message: ChromeMessage) => {
-  if (message.from === 'popup' && message.content.hasOwnProperty('scopeFilterInvert')) {
-    useWebsiteFilter(message.content.scopeFilterInvert);
-  }
-});
-
-await initScriptLoading();
+initScriptLoading();
