@@ -22,7 +22,7 @@ function useWebsiteFilter(status: boolean) {
 function initScriptLoading() {
   useChromeStorageLocalGet('scopeFilterInvert')
     .then((result) => {
-      useWebsiteFilter((result || []).includes(window.location.href));
+      useWebsiteFilter((result.scopeFilterInvert || []).includes(window.location.href));
     });
 
   useChromeRuntimeOnMessage((message: ChromeMessage) => {
