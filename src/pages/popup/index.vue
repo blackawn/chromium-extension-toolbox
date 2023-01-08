@@ -236,18 +236,6 @@ onMounted(async () => {
           />
         </div>
       </div>
-      <div
-        class="p-4"
-        @click="getLocal"
-      >
-        Get
-      </div>
-      <div
-        class="p-4"
-        @click="clearLocal"
-      >
-        clear
-      </div>
     </div>
   </div>
 </template>
