@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref,onMounted, reactive } from 'vue';
+import { onMounted, reactive } from 'vue';
 import {
   useChromeTabsQuery,
   useChromeTabsSendMessage,
@@ -10,7 +10,6 @@ import {
 import { fast } from '~/store/modules/website';
 import type { FastWebsite } from '~/types/fast-website.type';
 import Switch from '~/components/switch/index.vue';
-import utils from '~/utils/utils';
 
 const fastStore = fast();
 
@@ -19,20 +18,21 @@ const fastWebsite = reactive<FastWebsite>({
   url: '',
   title: '',
   count: 1,
-  time: 0,
   id: 0
 });
 
-const isGlobalFilterInvert = ref<boolean>(false);
 
+const is = reactive({
+  globalFilterInvert: false,
+  scopeFilterInvert: false
+});
 
 
 const handleAddToFastWebSite = () => {
   if (fastStore.findFastWebsite(fastWebsite.url)) return;
-  fastStore.addToFastWebsite({
-    ...fastWebsite,
-    time: Date.now()
-  });
+  fastStore.addToFastWebsite(
+    fastWebsite
+  );
 };
 
 const handleRemoveFromFastWebSite = () => {
@@ -40,47 +40,76 @@ const handleRemoveFromFastWebSite = () => {
   fastStore.removeFromFastWebsite(fastWebsite.url);
 };
 
+const handleGlobalFilterInvertSwitch = async (status: boolean) => {
+  is.globalFilterInvert = status;
 
-const handleGlobalFilterInvertSwitch = (status: boolean) => {
-  isGlobalFilterInvert.value = status;
-  useChromeStorageLocalSet('globalFilterInvert', isGlobalFilterInvert.value)
-    .then(() => {
-      useChromeTabsQuery({})
-        .then((tabs) => {
-          tabs.forEach((tab) => {
-            useChromeTabsSendMessage(
-              (tab.id || 0),
-              {
-                from: 'popup',
-                content: {
-                  globalFilterInvert: isGlobalFilterInvert.value
-                }
-              });
-          });
-        });
+  const { scopeFilterInvert } = await useChromeStorageLocalGet('scopeFilterInvert');
+
+  if (!(scopeFilterInvert || []).includes(fastWebsite.url)) {
+    is.scopeFilterInvert = status;
+  }
+
+  await useChromeStorageLocalSet('globalFilterInvert', status);
+  const tabs = await useChromeTabsQuery({});
+
+  tabs.forEach((tab) => {
+    useChromeTabsSendMessage((tab.id || 0), {
+      from: 'popup',
+      content: {
+        globalFilterInvert: status
+      }
+    });
+  });
+};
+
+const handleScopeFilterInvertSwitch = async (status: boolean) => {
+  is.scopeFilterInvert = status;
+
+  const { scopeFilterInvert } = await useChromeStorageLocalGet('scopeFilterInvert');
+
+  const scopeFilterInvertList = scopeFilterInvert || [];
+
+  if (status) {
+    scopeFilterInvertList.push(fastWebsite.url);
+  } else {
+    scopeFilterInvertList.splice(scopeFilterInvertList.indexOf(fastWebsite.url), 1);
+  }
+
+  await useChromeStorageLocalSet('scopeFilterInvert', scopeFilterInvertList);
+
+  await useChromeTabsSendMessage(
+    (fastWebsite.id || 0),
+    {
+      from: 'popup',
+      content: {
+        scopeFilterInvert: status
+      }
     });
 };
 
+onMounted(async () => {
 
-onMounted(() => {
-  useChromeStorageLocalGet('globalFilterInvert')
-    .then((result) => {
-      isGlobalFilterInvert.value = result.globalFilterInvert;
-      console.log(isGlobalFilterInvert.value);
-    });
-
-
-  useChromeTabsQuery({
+  const tabQuery = await useChromeTabsQuery({
     active: true,
     currentWindow: true
-  }).then((tab) => {
-    const { favIconUrl, title, url, id } = tab[0];
-    fastWebsite.favIconUrl = favIconUrl || '';
-    fastWebsite.title = title || '';
-    fastWebsite.url = url || '';
-    fastWebsite.id = id || 0;
   });
+
+  fastWebsite.favIconUrl = tabQuery[0].favIconUrl || '';
+  fastWebsite.title = tabQuery[0].title || '';
+  fastWebsite.url = tabQuery[0].url || '';
+  fastWebsite.id = tabQuery[0].id || 0;
+
+  const {
+    globalFilterInvert,
+    scopeFilterInvert
+  } = await useChromeStorageLocalGet();
+
+  is.globalFilterInvert = globalFilterInvert;
+
+  is.scopeFilterInvert = (scopeFilterInvert || []).includes(tabQuery[0].url);
+
 });
+
 
 </script>
 <template>
@@ -186,14 +215,38 @@ onMounted(() => {
           </button>
         </div>
       </div>
-      <div class="flex items-center justify-between">
+      <div
+        v-if="false"
+        class="flex items-center justify-between"
+      >
         <span class="text-base whitespace-nowrap">Global Filter Invert</span>
         <div class="flex items-center ml-6 py-1 px-1.5 space-x-2">
           <Switch
-            :status="isGlobalFilterInvert"
+            :status="is.globalFilterInvert"
             @emit-switch-status="(status)=>handleGlobalFilterInvertSwitch(status)"
           />
         </div>
+      </div>
+      <div class="flex items-center justify-between">
+        <span class="text-base whitespace-nowrap">Scope Filter Invert</span>
+        <div class="flex items-center ml-6 py-1 px-1.5 space-x-2">
+          <Switch
+            :status="is.scopeFilterInvert"
+            @emit-switch-status="(status)=>handleScopeFilterInvertSwitch(status)"
+          />
+        </div>
+      </div>
+      <div
+        class="p-4"
+        @click="getLocal"
+      >
+        Get
+      </div>
+      <div
+        class="p-4"
+        @click="clearLocal"
+      >
+        clear
       </div>
     </div>
   </div>

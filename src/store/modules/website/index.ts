@@ -17,7 +17,12 @@ export const fast = defineStore('fastStore', {
 
     addToFastWebsite(website: FastWebsite | null, index?: number) {
       if (utils.isObject(website)) {
-        this.webSite.push(website);
+        this.webSite.push(
+          {
+            ...website,
+            time: Date.now()
+          }
+        );
       }
 
       if (index && index >= 0) {
@@ -32,7 +37,7 @@ export const fast = defineStore('fastStore', {
           if (a.time === b.time) {
             return a.title?.localeCompare(b.title || '') || 0;
           }
-          return a.time - b.time;
+          return (a.time as number) - (b.time as number);
         }
         return (
           order === 'desc' ? b.count - a.count : a.count - b.count

@@ -3,8 +3,7 @@ import {
   useChromeRuntimeOnMessage
 } from '~/utils/chrome';
 import { ChromeMessage } from '~/types/chrome.type';
-import { getElementPropertyValue, setElementPropertyValue } from '~/utils/element';
-import utils from '~/utils/utils';
+import { setElementPropertyValue } from '~/utils/element';
 
 
 function setWebsiteFilter(value: string) {
@@ -21,19 +20,17 @@ function useWebsiteFilter(status: boolean) {
   }
 }
 
-function initScriptLoading() {
-  // get global is filter on
-  useChromeStorageLocalGet('globalFilterInvert')
-    .then((result) => {
-      useWebsiteFilter(result.globalFilterInvert);
-    });
+async function initScriptLoading() {
+
+  const { scopeFilterInvert } = await useChromeStorageLocalGet();
+
+  return useWebsiteFilter((scopeFilterInvert || []).includes(window.location.href));
 }
 
-
-useChromeRuntimeOnMessage((message) => {
-  if (message.from === 'popup' && message.content.hasOwnProperty('globalFilterInvert')) {
-    useWebsiteFilter(message.content.globalFilterInvert);
+useChromeRuntimeOnMessage((message: ChromeMessage) => {
+  if (message.from === 'popup' && message.content.hasOwnProperty('scopeFilterInvert')) {
+    useWebsiteFilter(message.content.scopeFilterInvert);
   }
 });
 
-initScriptLoading();
+await initScriptLoading();

@@ -5,7 +5,7 @@ import { useElementResizeObserver } from '~/composables/useElementResizeObserver
 const props = defineProps({
   status: {
     type: Boolean,
-    default: true
+    default: false
   }
 });
 

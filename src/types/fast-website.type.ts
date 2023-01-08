@@ -4,6 +4,6 @@ export declare interface FastWebsite {
     url: string
     title: string
     count: number
-    time: number
+    time?: number
     id?: number
 }
