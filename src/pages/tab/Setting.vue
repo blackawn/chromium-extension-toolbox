@@ -72,10 +72,12 @@ onBeforeMount(async () => {
 </script>
 <template>
   <div class="absolute top-4 right-4">
-    <div
-      class="p-1.5 rounded-full dark:hover:bg-neutral-700 text-2xl"
+    <button
+      type="button"
+      class="p-1.5 rounded-full hover:bg-gray-300 dark:hover:bg-neutral-700 text-2xl"
       @click="(is.visibleMenu = !is.visibleMenu)"
     >
+      <span class="sr-only">setting</span>
       <svg
         xmlns="http://www.w3.org/2000/svg"
         width="1em"
@@ -107,13 +109,13 @@ onBeforeMount(async () => {
           stroke-width="16"
         />
       </svg>
-    </div>
+    </button>
     <div
       v-show="is.visibleMenu"
-      class="absolute right-0 z-50 p-3 rounded-md dark:bg-neutral-800 space-y-2 select-none"
+      class="absolute right-0 z-50 p-3 rounded-md bg-gray-100 dark:bg-neutral-800 space-y-2 select-none"
     >
       <div>
-        <h6 class="mb-2.5 dark:text-neutral-500 text-sm">
+        <h6 class="mb-2.5 text-gray-400 dark:text-neutral-500 text-sm">
           General
         </h6>
         <div class="space-y-2">
@@ -122,8 +124,8 @@ onBeforeMount(async () => {
             <div class="flex items-center ml-6 py-1 px-1.5 space-x-2">
               <button
                 type="button"
-                class="text-xl dark:hover:text-neutral-400"
-                :class="( !themeMode?'dark:text-neutral-400':'dark:text-neutral-600' )"
+                class="text-xl hover:text-gray-600 dark:hover:text-neutral-400"
+                :class="( !themeMode?'text-gray-600 dark:text-neutral-400':'text-gray-400 dark:text-neutral-600' )"
                 @click="handleSystemToggleThemeMode"
               >
                 <svg
@@ -188,8 +190,8 @@ onBeforeMount(async () => {
               </button>
               <button
                 type="button"
-                class="text-xl dark:hover:text-neutral-400"
-                :class="( themeMode === 'light'?'dark:text-neutral-400':'dark:text-neutral-600' )"
+                class="text-xl hover:text-gray-600 dark:hover:text-neutral-400"
+                :class="( themeMode === 'light'?'text-gray-600 dark:text-neutral-400':'text-gray-400 dark:text-neutral-600' )"
                 @click="handleManualToggleThemeMode('light')"
               >
                 <span class="sr-only">light</span>
@@ -307,8 +309,8 @@ onBeforeMount(async () => {
               </button>
               <button
                 type="button"
-                class="text-xl dark:hover:text-neutral-400"
-                :class="( themeMode === 'dark'?'dark:text-neutral-400':'dark:text-neutral-600' )"
+                class="text-xl hover:text-gray-600 dark:hover:text-neutral-400"
+                :class="( themeMode === 'dark'?'text-gray-600 dark:text-neutral-400':'text-gray-400 dark:text-neutral-600' )"
                 @click="handleManualToggleThemeMode('dark')"
               >
                 <span class="sr-only">dark</span>
@@ -348,7 +350,7 @@ onBeforeMount(async () => {
         </div>
       </div>
       <div>
-        <h6 class="mb-2.5 dark:text-neutral-500 text-sm">
+        <h6 class="mb-2.5 text-gray-400 dark:text-neutral-500 text-sm">
           Fast Website
         </h6>
         <div class="space-y-2">
@@ -357,8 +359,8 @@ onBeforeMount(async () => {
             <div class="flex items-center ml-6 py-1 px-1.5 space-x-2">
               <button
                 type="button"
-                class="text-xl dark:hover:text-neutral-400"
-                :class="{ 'dark:text-neutral-600': !is.editFastWebsite }"
+                class="text-xl text-gray-400 dark:text-neutral-600 hover:text-gray-600 dark:hover:text-neutral-400"
+                :class="{ 'text-gray-600 dark:text-neutral-400': is.editFastWebsite }"
                 @click="handleEditFastWebsite"
               >
                 <span class="sr-only">edit</span>
@@ -397,7 +399,7 @@ onBeforeMount(async () => {
               </button>
               <button
                 type="button"
-                class="text-xl dark:text-neutral-600 dark:hover:text-neutral-400 pointer-events-none"
+                class="text-xl text-gray-400 dark:text-neutral-600 hover:text-gray-600 dark:hover:text-neutral-400 pointer-events-none"
                 @click="fastStore.emptyFastWebsite()"
               >
                 <span class="sr-only">empty</span>
@@ -471,8 +473,8 @@ onBeforeMount(async () => {
             <div class="flex items-center ml-6 py-1 px-1.5 space-x-2">
               <button
                 type="button"
-                class="text-xl dark:hover:text-neutral-400"
-                :class="( fastStore.webSiteSort === 'asc'?'dark:text-neutral-400':'dark:text-neutral-600' )"
+                class="text-xl hover:text-gray-600 dark:hover:text-neutral-400"
+                :class="( fastStore.webSiteSort === 'asc'?'text-gray-600 dark:text-neutral-400':'text-gray-400 dark:text-neutral-600' )"
                 @click="fastStore.sortFastWebsiteByCount('asc')"
               >
                 <span class="sr-only">asc</span>
@@ -541,8 +543,8 @@ onBeforeMount(async () => {
               </button>
               <button
                 type="button"
-                class="text-xl dark:hover:text-neutral-400"
-                :class="( fastStore.webSiteSort === 'desc'?'dark:text-neutral-400':'dark:text-neutral-600' )"
+                class="text-xl hover:text-gray-600 dark:hover:text-neutral-400"
+                :class="( fastStore.webSiteSort === 'desc'?'text-gray-600 dark:text-neutral-400':'text-gray-400 dark:text-neutral-600' )"
                 @click="fastStore.sortFastWebsiteByCount('desc')"
               >
                 <span class="sr-only">desc</span>
@@ -614,7 +616,7 @@ onBeforeMount(async () => {
         </div>
       </div>
       <div>
-        <h6 class="mb-2.5 dark:text-neutral-500 text-sm">
+        <h6 class="mb-2.5 text-gray-400 dark:text-neutral-500 text-sm">
           Search History
         </h6>
         <div class="space-y-2">
@@ -623,8 +625,8 @@ onBeforeMount(async () => {
             <div class="flex items-center ml-6 py-1 px-1.5 space-x-2">
               <button
                 type="button"
-                class="text-xl dark:hover:text-neutral-400"
-                :class="{ 'dark:text-neutral-600': !is.editSearchHistory }"
+                class="text-xl text-gray-400 dark:text-neutral-600 hover:text-gray-600 dark:hover:text-neutral-400"
+                :class="{ 'text-gray-600 dark:text-neutral-400': is.editSearchHistory }"
                 @click="handleEditSearchHistory"
               >
                 <span class="sr-only">edit</span>
@@ -663,7 +665,7 @@ onBeforeMount(async () => {
               </button>
               <button
                 type="button"
-                class="text-xl dark:text-neutral-600 dark:hover:text-neutral-400 pointer-events-none"
+                class="text-xl text-gray-400 dark:text-neutral-600 hover:text-gray-600 dark:hover:text-neutral-400 pointer-events-none"
                 @click="historyStore.emptyHistorySearch()"
               >
                 <span class="sr-only">empty</span>
@@ -737,8 +739,8 @@ onBeforeMount(async () => {
             <div class="flex items-center ml-6 py-1 px-1.5 space-x-2">
               <button
                 type="button"
-                class="text-xl dark:hover:text-neutral-400"
-                :class="( historyStore.searchSort === 'asc'?'dark:text-neutral-400':'dark:text-neutral-600' )"
+                class="text-xl hover:text-gray-600 dark:hover:text-neutral-400"
+                :class="( historyStore.searchSort === 'asc'?'text-gray-600 dark:text-neutral-400':'text-gray-400 dark:text-neutral-600' )"
                 @click="historyStore.sortHistorySearchByCount('asc')"
               >
                 <span class="sr-only">asc</span>
@@ -807,8 +809,8 @@ onBeforeMount(async () => {
               </button>
               <button
                 type="button"
-                class="text-xl dark:hover:text-neutral-400"
-                :class="( historyStore.searchSort === 'desc'?'dark:text-neutral-400':'dark:text-neutral-600' )"
+                class="text-xl hover:text-gray-600 dark:hover:text-neutral-400"
+                :class="( historyStore.searchSort === 'desc'?'text-gray-600 dark:text-neutral-400':'text-gray-400 dark:text-neutral-600' )"
                 @click="historyStore.sortHistorySearchByCount('desc')"
               >
                 <span class="sr-only">desc</span>

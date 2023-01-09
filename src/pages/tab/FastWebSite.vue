@@ -24,7 +24,7 @@ const fastStore = fast();
         :class="{ 'cursor-text': props.edit }"
       >
         <a
-          class="flex items-center m-1 py-1 px-1.5 rounded dark:bg-neutral-800 dark:hover:text-neutral-200 "
+          class="flex items-center m-1 py-1 px-1.5 rounded bg-gray-100 dark:bg-neutral-800 hover:text-neutral-600 dark:hover:text-neutral-200"
           :href="url"
           :class="{'pointer-events-none': props.edit }"
           @click="fastStore.addToFastWebsite(null,i)"
@@ -41,7 +41,7 @@ const fastStore = fast();
         <button
           v-show="props.edit"
           type="button"
-          class="absolute -top-0.5 -right-1 p-0.5 text-xs rounded-full dark:bg-neutral-700 dark:hover:text-neutral-200"
+          class="absolute -top-0.5 -right-1 p-0.5 text-xs rounded-full bg-gray-100 dark:bg-neutral-700 hover:text-neutral-600 dark:hover:text-neutral-200"
           @click="fastStore.deleteFastWebsite(i)"
         >
           <span class="sr-only">x</span>
@@ -60,9 +60,11 @@ const fastStore = fast();
           </svg>
         </button>
         <button
-          class="absolute -bottom-0.5 -right-1 p-0.5 opacity-0 rounded-full dark:bg-neutral-700 text-xs dark:hover:text-neutral-200 duration-300"
+            type="button"
+          class="absolute -bottom-0.5 -right-1 p-0.5 opacity-0 rounded-full bg-gray-100 dark:bg-neutral-700 text-xs hover:text-neutral-600 dark:hover:text-neutral-200 duration-300"
           :class="{ 'group-hover:opacity-100': props.edit }"
         >
+          <span class="sr-only">edit</span>
           <svg
             xmlns="http://www.w3.org/2000/svg"
             width="1em"

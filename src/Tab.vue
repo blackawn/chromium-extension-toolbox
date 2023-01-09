@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import Tab from '~/pages/tab/index.vue'
+import Tab from '~/pages/tab/index.vue';
 </script>
 
 <template>
-  <div class="w-screen h-screen overflow-hidden dark:bg-neutral-900">
+  <div class="w-screen h-screen overflow-hidden bg-gray-200 dark:bg-neutral-900">
     <div class="relative flex justify-center h-full">
       <Tab />
     </div>

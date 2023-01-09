@@ -46,8 +46,8 @@ const handleHistoryKeywordToSearch = (event: MouseEvent | KeyboardEvent, keyword
         class="relative"
       >
         <div
-          class="m-1 py-0.5 px-2 dark:bg-neutral-800 text-sm rounded"
-          :class="{'dark:hover:text-neutral-200':(!props.edit)}"
+          class="m-1 py-0.5 px-2 bg-gray-100 dark:bg-neutral-800 text-sm rounded"
+          :class="{'hover:text-neutral-600 dark:hover:text-neutral-200':(!props.edit)}"
           @click="(event)=>handleHistoryKeywordToSearch(event,keyword)"
         >
           <span>{{ keyword }}</span>
@@ -55,7 +55,7 @@ const handleHistoryKeywordToSearch = (event: MouseEvent | KeyboardEvent, keyword
         <button
           v-show="props.edit"
           type="button"
-          class="absolute -top-0.5 -right-1 p-0.5 text-xs rounded-full dark:bg-neutral-700 dark:hover:text-neutral-200"
+          class="absolute -top-0.5 -right-1 p-0.5 text-xs rounded-full bg-gray-100 dark:bg-neutral-700 hover:text-neutral-600 dark:hover:text-neutral-200"
           @click="historyStore.deleteHistorySearch(i)"
         >
           <span class="sr-only">x</span>

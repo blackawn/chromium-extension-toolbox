@@ -217,19 +217,12 @@ watchEffect(() => {
   }
 });
 
-
-/*
-['123', 'asd', 'asdx', 'sadw', '啊实打实', 'asdasdw', '阿斯顿', 'asdasd1', '阿斯顿是', '啊圣诞袜'].forEach((item: string) => {
-  historySearchStore.unShiftHistorySearch(item);
-});
-*/
-
-
 defineExpose({ onToSearchUrl });
+
 </script>
 
 <template>
-  <div class="relative flex items-center h-12 px-2.5 dark:bg-neutral-800 rounded-full">
+  <div class="relative flex items-center h-12 px-2.5 bg-gray-100 dark:bg-neutral-800 rounded-full">
     <div
       tabindex="0"
       class="group w-10 select-none cursor-pointer"
@@ -247,7 +240,7 @@ defineExpose({ onToSearchUrl });
           v-for="item in defaultSearchEngines"
           v-show="item.name === genericStore.searchEngine"
           :key="item.name"
-          class="w-10 h-10 p-2 rounded-full dark:hover:bg-neutral-700"
+          class="w-10 h-10 p-2 rounded-full hover:bg-gray-200 dark:hover:bg-neutral-700"
         >
           <img
             :src="item.icon"
@@ -258,12 +251,12 @@ defineExpose({ onToSearchUrl });
       </TransitionGroup>
       <div
         class="absolute top-12 flex mt-0.5 p-2 opacity-0 -z-30
-        group-focus:opacity-100 group-focus:z-50 duration-300 dark:bg-neutral-800 rounded space-x-3"
+        group-focus:opacity-100 group-focus:z-50 duration-300 bg-gray-100 dark:bg-neutral-800 rounded space-x-3"
       >
         <div
           v-for="({name,icon}) in defaultSearchEngines"
           :key="name"
-          class="w-8 h-8 p-1.5 rounded-full dark:hover:bg-neutral-700"
+          class="w-8 h-8 p-1.5 rounded-full hover:bg-gray-200 dark:hover:bg-neutral-700"
           @click="(defaultSearchEngine = name);(genericStore.reviseDefaultSearchEngine(name))"
         >
           <img
@@ -288,7 +281,7 @@ defineExpose({ onToSearchUrl });
     <div class="flex items-center dark:text-neutral-400 space-x-2">
       <button
         type="button"
-        class="p-1 text-lg rounded-full scale-0 duration-300 dark:hover:bg-neutral-700"
+        class="p-1 text-lg rounded-full scale-0 duration-300 hover:bg-gray-200 dark:hover:bg-neutral-700"
         :class="{'scale-100':searchKeyWork.trim()}"
         @click="(searchKeyWork = '')"
       >
@@ -309,7 +302,7 @@ defineExpose({ onToSearchUrl });
       </button>
       <button
         type="button"
-        class="p-1.5 text-2xl rounded-full dark:hover:bg-neutral-700"
+        class="p-1.5 text-2xl rounded-full hover:bg-gray-200 dark:hover:bg-neutral-700"
         @click="onToSearchUrl(false)"
       >
         <span class="sr-only">search</span>

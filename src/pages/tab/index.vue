@@ -5,6 +5,8 @@ import SearchHistory from './SearchHistory.vue';
 import FastWebSite from './FastWebSite.vue';
 import Siting from './Setting.vue';
 
+import popupMessage from '~/components/popup-message';
+
 const is = reactive({
   editFastWebsite: false,
   editSearchHistory: false
@@ -24,6 +26,16 @@ function emitEditSearchHistory(value: any) {
   is.editSearchHistory = value;
 }
 
+function oc (){
+  console.log('关闭');
+}
+
+function show() {
+  popupMessage({
+    message: 'test',
+    onClose: oc
+  });
+}
 </script>
 
 <template>
@@ -31,6 +43,9 @@ function emitEditSearchHistory(value: any) {
     @emit-edit-general-website="emitEditGeneralWebSite"
     @emit-edit-search-history="emitEditSearchHistory"
   />
+  <button @click="show">
+    show
+  </button>
   <div class="flex flex-col justify-center w-128 h-full">
     <FastWebSite
       :edit="is.editFastWebsite"

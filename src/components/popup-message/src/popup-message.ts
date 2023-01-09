@@ -35,12 +35,13 @@ const initInstance = (options: any) => {
     {
       ...options,
       offset: diffOffset,
-      onClose: () => {
+      onClose: () => { // hidden message
         // options.onClose?.()
         options.onClose && options.onClose();
         const index = instanceList.indexOf(vNode.component);
         if (index !== -1) {
           instanceList.splice(index, 1);
+
           for (let i = index; i < instanceList.length; i++) {
             const instance = instanceList[i];
             instance.props.offset -= instance.vnode.el.offsetHeight + (options.offset || 16);
@@ -48,6 +49,7 @@ const initInstance = (options: any) => {
         }
       },
       onDestroy: () => {
+        // remove message dom
         render(null, container);
       }
     }

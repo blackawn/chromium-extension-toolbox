@@ -15,7 +15,7 @@ async function useChromeTabsUpdate(id: number, url: string) {
 
 
 async function useChromeStorageLocalSet(items: object | string, value?: any) {
-  if (utils.isObject(items)){
+  if (utils.isObject(items)) {
     const setPromises = [];
     for (const itemsKey in items) {
       setPromises.push(chrome.storage.local.set({
@@ -79,7 +79,7 @@ async function useChromeRuntimeSendMessage(message: ChromeMessage) {
   return await chrome.runtime.sendMessage(message);
 }
 
-async function useChromeRuntimeOnMessage(
+function useChromeRuntimeOnMessage(
   callback: (message: ChromeMessage, sender?: chrome.runtime.MessageSender) => void) {
   return chrome.runtime.onMessage.addListener((message, sender) => {
     callback(message, sender);

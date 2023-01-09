@@ -34,16 +34,13 @@ watchEffect(() => {
 <template>
   <div
     ref="refSwitchBar"
-    class="group flex p-0.75 w-10 h-5 border dark:border-neutral-600 rounded-full duration-300 cursor-pointer"
-    :class="{ 'dark:bg-neutral-600': switchStatus }"
+    class="flex p-0.75 w-10 h-5 border border-gray-300 dark:border-neutral-600 rounded-full duration-300 cursor-pointer"
+    :class="{ 'bg-gray-300 dark:bg-neutral-600': switchStatus }"
     @click="handleSwitchStatus"
   >
     <div
       ref="refSwitchDot"
-      class="w-3 h-full dark:bg-neutral-500 dark:group-hover:bg-neutral-400 rounded-full duration-300"
-      :class="[
-        { 'dark:bg-neutral-400': switchStatus },
-      ]"
+      class="w-3 h-full bg-gray-400 dark:bg-neutral-400 rounded-full duration-300"
       :style="{ transform:`translateX(${switchStatus?( (refSwitchBarWidth || 0) - (refSwitchWidth || 0) ):0}px)`}"
     />
   </div>
