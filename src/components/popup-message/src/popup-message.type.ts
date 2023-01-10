@@ -1,5 +1,5 @@
-export declare type status = '' | 'success' | 'warning' | 'info' | 'error'
-export declare type position =
+export declare type Status = '' | 'success' | 'warning' | 'info' | 'error'
+export declare type Position =
     ''
     | 'top'
     | 'bottom'
@@ -8,3 +8,14 @@ export declare type position =
     | 'right-top'
     | 'left-bottom'
     | 'right-bottom'
+
+export declare interface Options {
+    message: string
+    status?: Status
+    position?: Position
+    duration?: number
+    offset?: number
+    toTargetElement?: string | HTMLElement
+    onInvisible?: () => void
+    onDestroy?: () => void
+}

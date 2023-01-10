@@ -4,8 +4,8 @@ import SearchBox from './SearchBox.vue';
 import SearchHistory from './SearchHistory.vue';
 import FastWebSite from './FastWebSite.vue';
 import Siting from './Setting.vue';
-
-import popupMessage from '~/components/popup-message';
+import utils from '~/utils/utils';
+import PopupMessage from '~/components/popup-message';
 
 const is = reactive({
   editFastWebsite: false,
@@ -31,9 +31,9 @@ function oc (){
 }
 
 function show() {
-  popupMessage({
+  PopupMessage({
     message: 'test',
-    onClose: oc
+    onInvisible: oc
   });
 }
 </script>

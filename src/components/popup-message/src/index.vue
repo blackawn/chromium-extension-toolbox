@@ -1,14 +1,13 @@
 <script lang="ts">
 import {
   ref,
-  reactive,
   computed,
   defineComponent,
   onUnmounted,
   onMounted,
   PropType
 } from 'vue';
-import type { status, position } from './popup-message.type';
+import type { Status, Position } from './popup-message.type';
 
 export default defineComponent({
   props: {
@@ -17,11 +16,11 @@ export default defineComponent({
       default: ''
     },
     status: {
-      type: String as PropType<status>,
+      type: String as PropType<Status>,
       default: 'info'
     },
     position: {
-      type: String as PropType<position>,
+      type: String as PropType<Position>,
       default: 'top'
     },
     firstOffset: {
@@ -71,7 +70,7 @@ export default defineComponent({
       default: () => {
       }
     },
-    onClose: {
+    onInvisible: {
       type: Function as PropType<() => void>,
       default: () => {
       }
@@ -91,7 +90,7 @@ export default defineComponent({
     function setTimer() {
       clearTimer();
       timer = setTimeout(() => {
-        destroyMessage();
+        visible.value = false;
       }, props.duration);
     }
 
@@ -100,11 +99,6 @@ export default defineComponent({
         clearTimeout(timer);
       }
     }
-
-    function destroyMessage() {
-      visible.value = false;
-    }
-
 
     onMounted(() => {
       visible.value = true;
@@ -136,7 +130,9 @@ export default defineComponent({
     :leave-from-class="leaveFromClass"
     :leave-to-class="leaveToClass"
     :leave-active-class="leaveActiveClass"
-    @before-leave="onClose"
+    @before-enter="()=>{}"
+    @after-entera="()=>{}"
+    @before-leave="onInvisible"
     @after-leave="onDestroy"
   >
     <div
