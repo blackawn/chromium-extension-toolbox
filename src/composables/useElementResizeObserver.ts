@@ -7,6 +7,8 @@ export function useElementResizeObserver(element: Ref<HTMLElement | null> | HTML
   const width = ref<number | null>(null);
   const height = ref<number | null>(null);
 
+  const isInitializing = ref(true);
+
   const useResizeObserver = new ResizeObserver((entries: ResizeObserverEntry[]) => {
     for (const entry of entries) {
       if (entry.contentBoxSize) {
@@ -28,6 +30,7 @@ export function useElementResizeObserver(element: Ref<HTMLElement | null> | HTML
     const elem = isRef(element) ? element.value : element;
     if (utils.isElement(elem)) {
       useResizeObserver.observe(elem);
+      isInitializing.value = false;
     }
   }
 
@@ -62,6 +65,7 @@ export function useElementResizeObserver(element: Ref<HTMLElement | null> | HTML
     height,
     resizeObserver,
     unResizeObserver,
-    dictionaryResizeObserver
+    dictionaryResizeObserver,
+    isInitializing
   };
 }

@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { ref } from 'vue';
 import { history } from '~/store/modules/history';
+import { Close } from '~/components/icon';
 
 const props = defineProps({
   edit: {
@@ -10,7 +10,7 @@ const props = defineProps({
 });
 
 const emits = defineEmits([
-  'emit-history-to-search'
+  'handle:history-to-search'
 ]);
 
 const historyStore = history();
@@ -19,12 +19,12 @@ const historyStore = history();
 const handleHistoryKeywordToSearch = (event: MouseEvent | KeyboardEvent, keyword: string) => {
   if (!props.edit) {
     if (event.ctrlKey) {
-      emits('emit-history-to-search', {
+      emits('handle:history-to-search', {
         newTab: true,
         keyword
       });
     } else {
-      emits('emit-history-to-search', {
+      emits('handle:history-to-search', {
         isCreate: false,
         keyword
       });
@@ -48,7 +48,7 @@ const handleHistoryKeywordToSearch = (event: MouseEvent | KeyboardEvent, keyword
         <div
           class="m-1 py-0.5 px-2 bg-gray-100 dark:bg-neutral-800 text-sm rounded"
           :class="{'hover:text-neutral-600 dark:hover:text-neutral-200':(!props.edit)}"
-          @click="(event)=>handleHistoryKeywordToSearch(event,keyword)"
+          @click="(event)=>{handleHistoryKeywordToSearch(event,keyword)}"
         >
           <span>{{ keyword }}</span>
         </div>
@@ -59,19 +59,7 @@ const handleHistoryKeywordToSearch = (event: MouseEvent | KeyboardEvent, keyword
           @click="historyStore.deleteHistorySearch(i)"
         >
           <span class="sr-only">x</span>
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="1em"
-            height="1em"
-            preserveAspectRatio="xMidYMid meet"
-            viewBox="0 0 256 256"
-          >
-            <path
-              fill="currentColor"
-              d="M205.7 194.3a8.1 8.1 0 0 1 0 11.4a8.2 8.2 0 0 1-11.4 0L128 139.3l-66.3 66.4a8.2 8.2 0 0 1-11.4
-            0a8.1 8.1 0 0 1 0-11.4l66.4-66.3l-66.4-66.3a8.1 8.1 0 0 1 11.4-11.4l66.3 66.4l66.3-66.4a8.1 8.1 0 0 1 11.4 11.4L139.3 128Z"
-            />
-          </svg>
+          <Close />
         </button>
       </div>
     </TransitionGroup>

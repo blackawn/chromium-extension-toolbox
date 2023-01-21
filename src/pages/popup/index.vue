@@ -10,6 +10,7 @@ import {
 import { fast } from '~/store/modules/website';
 import type { FastWebsite } from '~/types/fast-website.type';
 import Switch from '~/components/switch/index.vue';
+import { Add, Remove } from '~/components/icon';
 
 const fastStore = fast();
 
@@ -23,8 +24,8 @@ const fastWebsite = reactive<FastWebsite>({
 
 
 const is = reactive({
-  globalFilterInvert: false,
-  scopeFilterInvert: false
+  visibleSetFilter: false,
+  filterInvert: false
 });
 
 
@@ -40,32 +41,10 @@ const handleRemoveFromFastWebSite = () => {
   fastStore.removeFromFastWebsite(fastWebsite.url);
 };
 
-const handleGlobalFilterInvertSwitch = async (status: boolean) => {
-  is.globalFilterInvert = status;
+const handleSetFilterInvert = async (status: boolean) => {
+  is.filterInvert = status;
 
-  const { scopeFilterInvert } = await useChromeStorageLocalGet('scopeFilterInvert');
-
-  if (!(scopeFilterInvert || []).includes(fastWebsite.url)) {
-    is.scopeFilterInvert = status;
-  }
-
-  await useChromeStorageLocalSet('globalFilterInvert', status);
-  const tabs = await useChromeTabsQuery({});
-
-  tabs.forEach((tab) => {
-    useChromeTabsSendMessage((tab.id || 0), {
-      from: 'popup',
-      content: {
-        globalFilterInvert: status
-      }
-    });
-  });
-};
-
-const handleScopeFilterInvertSwitch = async (status: boolean) => {
-  is.scopeFilterInvert = status;
-
-  const { scopeFilterInvert } = await useChromeStorageLocalGet('scopeFilterInvert');
+  const { scopeFilterInvert } = await useChromeStorageLocalGet('filterInvert');
 
   const scopeFilterInvertList = scopeFilterInvert || [];
 
@@ -75,16 +54,26 @@ const handleScopeFilterInvertSwitch = async (status: boolean) => {
     scopeFilterInvertList.splice(scopeFilterInvertList.indexOf(fastWebsite.url), 1);
   }
 
-  await useChromeStorageLocalSet('scopeFilterInvert', scopeFilterInvertList);
+  await useChromeStorageLocalSet('filterInvert', scopeFilterInvertList);
 
   await useChromeTabsSendMessage(
     (fastWebsite.id || 0),
     {
       from: 'popup',
       content: {
-        scopeFilterInvert: status
+        filterInvert: status
       }
     });
+};
+
+const storageLocalGet = () => {
+  useChromeStorageLocalGet('filterInvert').then((res) => {
+    console.log(res);
+  });
+};
+
+const storageLocalClean = () => {
+  useChromeStorageLocalClear();
 };
 
 onMounted(async () => {
@@ -94,19 +83,19 @@ onMounted(async () => {
     currentWindow: true
   });
 
+  is.visibleSetFilter =
+      !(['chrome', 'edge'].includes(tabQuery[0].url!.split(':')[0]));
+
   fastWebsite.favIconUrl = tabQuery[0].favIconUrl || '';
   fastWebsite.title = tabQuery[0].title || '';
   fastWebsite.url = tabQuery[0].url || '';
   fastWebsite.id = tabQuery[0].id || 0;
 
   const {
-    globalFilterInvert,
     scopeFilterInvert
   } = await useChromeStorageLocalGet();
 
-  is.globalFilterInvert = globalFilterInvert;
-
-  is.scopeFilterInvert = (scopeFilterInvert || []).includes(tabQuery[0].url);
+  is.filterInvert = (scopeFilterInvert || []).includes(tabQuery[0].url);
 
 });
 
@@ -127,50 +116,7 @@ onMounted(async () => {
             @click="handleAddToFastWebSite"
           >
             <span class="sr-only">add</span>
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="1em"
-              height="1em"
-              fill="currentColor"
-              viewBox="0 0 256 256"
-            >
-              <rect
-                width="256"
-                height="256"
-                fill="none"
-              />
-              <circle
-                cx="128"
-                cy="128"
-                r="96"
-                fill="none"
-                stroke="currentColor"
-                stroke-miterlimit="10"
-                stroke-width="16"
-              />
-              <line
-                x1="88"
-                y1="128"
-                x2="168"
-                y2="128"
-                fill="none"
-                stroke="currentColor"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="16"
-              />
-              <line
-                x1="128"
-                y1="88"
-                x2="128"
-                y2="168"
-                fill="none"
-                stroke="currentColor"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="16"
-              />
-            </svg>
+            <Add />
           </button>
           <button
             type="button"
@@ -179,62 +125,30 @@ onMounted(async () => {
             @click="handleRemoveFromFastWebSite"
           >
             <span class="sr-only">remove</span>
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="1em"
-              height="1em"
-              fill="currentColor"
-              viewBox="0 0 256 256"
-            >
-              <rect
-                width="256"
-                height="256"
-                fill="none"
-              />
-              <circle
-                cx="128"
-                cy="128"
-                r="96"
-                fill="none"
-                stroke="currentColor"
-                stroke-miterlimit="10"
-                stroke-width="16"
-              />
-              <line
-                x1="88"
-                y1="128"
-                x2="168"
-                y2="128"
-                fill="none"
-                stroke="currentColor"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="16"
-              />
-            </svg>
+            <Remove />
           </button>
         </div>
       </div>
       <div
-        v-if="false"
+        v-if="is.visibleSetFilter"
         class="flex items-center justify-between"
       >
-        <span class="text-base whitespace-nowrap">Global Filter Invert</span>
-        <div class="flex items-center ml-6 py-1 px-1.5 space-x-2">
-          <Switch
-            :status="is.globalFilterInvert"
-            @emit-switch-status="(status)=>handleGlobalFilterInvertSwitch(status)"
-          />
-        </div>
-      </div>
-      <div class="flex items-center justify-between">
         <span class="text-base whitespace-nowrap">Scope Filter Invert</span>
         <div class="flex items-center ml-6 py-1 px-1.5 space-x-2">
           <Switch
-            :status="is.scopeFilterInvert"
-            @emit-switch-status="(status)=>handleScopeFilterInvertSwitch(status)"
+            v-model:status="is.filterInvert"
+            class="w-10 h-5"
+            @update:switch-status="(status)=>{handleSetFilterInvert(status)}"
           />
         </div>
+      </div>
+      <div>
+        <button @click="storageLocalGet">
+          Get
+        </button>
+        <button @click="storageLocalClean">
+          Clean
+        </button>
       </div>
     </div>
   </div>
