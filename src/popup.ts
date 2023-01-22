@@ -1,8 +1,10 @@
-import { createApp } from 'vue'
-import './style.css'
-import store from './store'
-import App from './Popup.vue'
+import { createApp } from 'vue';
+import './style.css';
+import store from './store';
+import { longPress } from '~/directive/long-press';
+import App from './Popup.vue';
 
 createApp(App)
   .use(store)
-  .mount('#root')
+  .directive('long-press', longPress)
+  .mount('#root');

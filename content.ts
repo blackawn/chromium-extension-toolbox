@@ -20,14 +20,14 @@ function useWebsiteFilter(status: boolean) {
 }
 
 function initScriptLoading() {
-  useChromeStorageLocalGet('scopeFilterInvert')
+  useChromeStorageLocalGet('filterInvert')
     .then((result) => {
-      useWebsiteFilter((result.scopeFilterInvert || []).includes(window.location.href));
+      useWebsiteFilter((result.filterInvert || []).includes(window.location.href));
     });
 
   useChromeRuntimeOnMessage((message: ChromeMessage) => {
-    if (message.from === 'popup' && message.content.hasOwnProperty('scopeFilterInvert')) {
-      useWebsiteFilter(message.content.scopeFilterInvert);
+    if (message.from === 'popup' && message.content.hasOwnProperty('filterInvert')) {
+      useWebsiteFilter(message.content.filterInvert);
     }
   });
 }

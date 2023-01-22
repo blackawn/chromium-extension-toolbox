@@ -10,7 +10,7 @@ import {
 import { fast } from '~/store/modules/website';
 import type { FastWebsite } from '~/types/fast-website.type';
 import Switch from '~/components/switch/index.vue';
-import { Add, Remove } from '~/components/icon';
+import { IncreaseRound, DecreaseRound } from '~/components/icon';
 
 const fastStore = fast();
 
@@ -24,7 +24,7 @@ const fastWebsite = reactive<FastWebsite>({
 
 
 const is = reactive({
-  visibleSetFilter: false,
+  setFilterInvert: false,
   filterInvert: false
 });
 
@@ -44,17 +44,17 @@ const handleRemoveFromFastWebSite = () => {
 const handleSetFilterInvert = async (status: boolean) => {
   is.filterInvert = status;
 
-  const { scopeFilterInvert } = await useChromeStorageLocalGet('filterInvert');
+  const { filterInvert } = await useChromeStorageLocalGet('filterInvert');
 
-  const scopeFilterInvertList = scopeFilterInvert || [];
+  const filterInvertList = filterInvert || [];
 
   if (status) {
-    scopeFilterInvertList.push(fastWebsite.url);
+    filterInvertList.push(fastWebsite.url);
   } else {
-    scopeFilterInvertList.splice(scopeFilterInvertList.indexOf(fastWebsite.url), 1);
+    filterInvertList.splice(filterInvertList.indexOf(fastWebsite.url), 1);
   }
 
-  await useChromeStorageLocalSet('filterInvert', scopeFilterInvertList);
+  await useChromeStorageLocalSet('filterInvert', filterInvertList);
 
   await useChromeTabsSendMessage(
     (fastWebsite.id || 0),
@@ -66,16 +66,6 @@ const handleSetFilterInvert = async (status: boolean) => {
     });
 };
 
-const storageLocalGet = () => {
-  useChromeStorageLocalGet('filterInvert').then((res) => {
-    console.log(res);
-  });
-};
-
-const storageLocalClean = () => {
-  useChromeStorageLocalClear();
-};
-
 onMounted(async () => {
 
   const tabQuery = await useChromeTabsQuery({
@@ -83,7 +73,7 @@ onMounted(async () => {
     currentWindow: true
   });
 
-  is.visibleSetFilter =
+  is.setFilterInvert =
       !(['chrome', 'edge'].includes(tabQuery[0].url!.split(':')[0]));
 
   fastWebsite.favIconUrl = tabQuery[0].favIconUrl || '';
@@ -107,7 +97,7 @@ onMounted(async () => {
       <div
         class="flex items-center justify-between"
       >
-        <span class="text-base whitespace-nowrap">Is To Fast Website</span>
+        <span class="text-base whitespace-nowrap">To Fast Website</span>
         <div class="flex items-center ml-6 py-1 px-1.5 space-x-2">
           <button
             type="button"
@@ -116,7 +106,7 @@ onMounted(async () => {
             @click="handleAddToFastWebSite"
           >
             <span class="sr-only">add</span>
-            <Add />
+            <IncreaseRound />
           </button>
           <button
             type="button"
@@ -125,15 +115,15 @@ onMounted(async () => {
             @click="handleRemoveFromFastWebSite"
           >
             <span class="sr-only">remove</span>
-            <Remove />
+            <DecreaseRound />
           </button>
         </div>
       </div>
       <div
-        v-if="is.visibleSetFilter"
+        v-if="is.setFilterInvert"
         class="flex items-center justify-between"
       >
-        <span class="text-base whitespace-nowrap">Scope Filter Invert</span>
+        <span class="text-base whitespace-nowrap">Filter Invert</span>
         <div class="flex items-center ml-6 py-1 px-1.5 space-x-2">
           <Switch
             v-model:status="is.filterInvert"
@@ -143,12 +133,15 @@ onMounted(async () => {
         </div>
       </div>
       <div>
-        <button @click="storageLocalGet">
-          Get
-        </button>
-        <button @click="storageLocalClean">
-          Clean
-        </button>
+        <span
+          v-long-press="{
+            time: 3000,
+            mousedownCallback: () => {
+              useChromeStorageLocalClear();
+            },
+          }"
+          class="text-base whitespace-nowrap dark:hover:text-neutral-500"
+        >Clear All Filter Invert</span>
       </div>
     </div>
   </div>

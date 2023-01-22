@@ -48,6 +48,7 @@ const fastStore = fast();
           <Close />
         </button>
         <button
+          v-if="false"
           type="button"
           class="absolute -bottom-0.5 -right-1 p-0.5 opacity-0 rounded-full bg-gray-100 dark:bg-neutral-700 text-xs hover:text-neutral-600 dark:hover:text-neutral-200 duration-300"
           :class="{ 'group-hover:opacity-100': props.edit }"

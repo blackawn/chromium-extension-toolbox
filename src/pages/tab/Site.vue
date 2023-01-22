@@ -162,9 +162,14 @@ onBeforeMount(async () => {
                 <Edit />
               </button>
               <button
+                v-long-press="{
+                  time: 3000,
+                  mousedownCallback: () => {
+                    fastStore.emptyFastWebsite()
+                  },
+                }"
                 type="button"
-                class="text-xl text-gray-400 dark:text-neutral-600 hover:text-gray-600 dark:hover:text-neutral-400 pointer-events-none"
-                @click="fastStore.emptyFastWebsite()"
+                class="text-xl text-gray-400 dark:text-neutral-600 hover:text-gray-600 dark:hover:text-neutral-400"
               >
                 <span class="sr-only">empty</span>
                 <Delete />
@@ -214,9 +219,14 @@ onBeforeMount(async () => {
                 <Edit />
               </button>
               <button
+                v-long-press="{
+                  time: 3000,
+                  mousedownCallback: () => {
+                    historyStore.emptyHistorySearch()
+                  },
+                }"
                 type="button"
-                class="text-xl text-gray-400 dark:text-neutral-600 hover:text-gray-600 dark:hover:text-neutral-400 pointer-events-none"
-                @click="historyStore.emptyHistorySearch()"
+                class="text-xl text-gray-400 dark:text-neutral-600 hover:text-gray-600 dark:hover:text-neutral-400"
               >
                 <span class="sr-only">empty</span>
                 <Delete />
