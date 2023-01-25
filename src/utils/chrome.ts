@@ -2,7 +2,12 @@ import type { ChromeMessage } from '~/types/chrome.type';
 import utils from '~/utils/utils';
 
 async function useChromeTabsQuery(queryInfo: chrome.tabs.QueryInfo) {
-  return chrome.tabs.query(queryInfo);
+  const query = await chrome.tabs.query(queryInfo)
+  return query[0];
+}
+
+async function useChromeTabsGet(tabId: number) {
+  return chrome.tabs.get(tabId);
 }
 
 async function useChromeTabsCreate(url: string) {
@@ -88,6 +93,7 @@ function useChromeRuntimeOnMessage(
 
 export {
   useChromeTabsQuery,
+  useChromeTabsGet,
   useChromeTabsCreate,
   useChromeTabsUpdate,
   useChromeStorageLocalSet,

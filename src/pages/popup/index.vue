@@ -17,6 +17,7 @@ const fastStore = fast();
 const fastWebsite = reactive<FastWebsite>({
   favIconUrl: 'string',
   url: '',
+  hostname: '',
   title: '',
   count: 1,
   id: 0
@@ -49,9 +50,9 @@ const handleSetFilterInvert = async (status: boolean) => {
   const filterInvertList = filterInvert || [];
 
   if (status) {
-    filterInvertList.push(fastWebsite.url);
+    filterInvertList.push(fastWebsite.hostname);
   } else {
-    filterInvertList.splice(filterInvertList.indexOf(fastWebsite.url), 1);
+    filterInvertList.splice(filterInvertList.indexOf(fastWebsite.hostname), 1);
   }
 
   await useChromeStorageLocalSet('filterInvert', filterInvertList);
@@ -68,24 +69,25 @@ const handleSetFilterInvert = async (status: boolean) => {
 
 onMounted(async () => {
 
-  const tabQuery = await useChromeTabsQuery({
+  const { favIconUrl, title, url, id } = await useChromeTabsQuery({
     active: true,
     currentWindow: true
   });
 
   is.setFilterInvert =
-      !(['chrome', 'edge'].includes(tabQuery[0].url!.split(':')[0]));
+      !(['chrome', 'edge'].includes(url!.split(':')[0]));
 
-  fastWebsite.favIconUrl = tabQuery[0].favIconUrl || '';
-  fastWebsite.title = tabQuery[0].title || '';
-  fastWebsite.url = tabQuery[0].url || '';
-  fastWebsite.id = tabQuery[0].id || 0;
+  fastWebsite.favIconUrl = favIconUrl || '';
+  fastWebsite.title = title || '';
+  fastWebsite.url = url || '';
+  fastWebsite.hostname = (new URL((url || '')).hostname);
+  fastWebsite.id = id || 0;
 
   const {
-    scopeFilterInvert
+    filterInvert
   } = await useChromeStorageLocalGet();
 
-  is.filterInvert = (scopeFilterInvert || []).includes(tabQuery[0].url);
+  is.filterInvert = (filterInvert || []).includes(fastWebsite.hostname);
 
 });
 
