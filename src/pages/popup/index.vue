@@ -134,13 +134,8 @@ onMounted(async () => {
       </div>
       <div>
         <span
-          v-long-press="{
-            time: 3000,
-            mousedownCallback: () => {
-              useChromeStorageLocalClear();
-            },
-          }"
           class="text-base whitespace-nowrap dark:hover:text-neutral-500"
+          @dblclick="useChromeStorageLocalClear()"
         >Clear All Filter Invert</span>
       </div>
     </div>

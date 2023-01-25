@@ -293,7 +293,7 @@ defineExpose({ onToSearchUrl });
       </button>
       <button
         type="button"
-        class="p-1.5 text-2xl rounded-full hover:bg-gray-200 dark:hover:bg-neutral-700"
+        class="p-1.5 text-2xl rounded-full text-gray-600 dark:text-neutral-500 hover:bg-gray-200 dark:hover:bg-neutral-700"
         @click="onToSearchUrl(false)"
       >
         <span class="sr-only">search</span>

@@ -35,7 +35,7 @@ const handleHistoryKeywordToSearch = (event: MouseEvent | KeyboardEvent, keyword
 
 <template>
   <div
-    class="flex flex-wrap mt-4"
+    class="flex flex-wrap content-start flex-1 my-2 py-2 overflow-x-hidden"
   >
     <TransitionGroup
       name="search-history"

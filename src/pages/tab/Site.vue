@@ -30,13 +30,12 @@ const historyStore = history();
 const fastStore = fast();
 
 const is = reactive({
-  visibleMenu: true,
+  visibleMenu: false,
   editFastWebsite: false,
   editSearchHistory: false
 });
 
 const themeMode = ref<ThemeMode>('');
-
 
 const handleEditFastWebsite = () => {
   is.editFastWebsite = !is.editFastWebsite;
@@ -85,7 +84,7 @@ onBeforeMount(async () => {
   <div class="absolute top-4 right-4">
     <button
       type="button"
-      class="p-1.5 rounded-full hover:bg-gray-300 dark:hover:bg-neutral-700 text-2xl"
+      class="p-1.5 rounded-full text-gray-600 dark:text-neutral-500 hover:bg-gray-300 dark:hover:bg-neutral-700 text-2xl"
       @click="(is.visibleMenu = !is.visibleMenu)"
     >
       <span class="sr-only">site</span>
@@ -162,14 +161,9 @@ onBeforeMount(async () => {
                 <Edit />
               </button>
               <button
-                v-long-press="{
-                  time: 3000,
-                  mousedownCallback: () => {
-                    fastStore.emptyFastWebsite()
-                  },
-                }"
                 type="button"
                 class="text-xl text-gray-400 dark:text-neutral-600 hover:text-gray-600 dark:hover:text-neutral-400"
+                @dblclick="fastStore.emptyFastWebsite()"
               >
                 <span class="sr-only">empty</span>
                 <Delete />
@@ -219,14 +213,9 @@ onBeforeMount(async () => {
                 <Edit />
               </button>
               <button
-                v-long-press="{
-                  time: 3000,
-                  mousedownCallback: () => {
-                    historyStore.emptyHistorySearch()
-                  },
-                }"
                 type="button"
                 class="text-xl text-gray-400 dark:text-neutral-600 hover:text-gray-600 dark:hover:text-neutral-400"
+                @dblclick="historyStore.emptyHistorySearch()"
               >
                 <span class="sr-only">empty</span>
                 <Delete />

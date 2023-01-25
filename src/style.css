@@ -5,10 +5,26 @@
 
 @layer base {
   body{
-    @apply dark:text-neutral-400
+    @apply text-gray-600 dark:text-neutral-400
   }
   input {
     @apply bg-transparent focus:outline-none;
+  }
+
+  ::-webkit-scrollbar-track {
+    @apply bg-transparent;
+  }
+
+  ::-webkit-scrollbar {
+    @apply w-0.5 h-0.5 bg-transparent;
+
+  }
+  ::-webkit-scrollbar-thumb {
+    @apply rounded-full bg-neutral-700;
+  }
+
+  .dark::-webkit-scrollbar-thumb {
+    @apply rounded-full bg-neutral-700;
   }
 }
 

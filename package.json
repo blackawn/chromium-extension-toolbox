@@ -13,11 +13,9 @@
     "@typescript-eslint/eslint-plugin": "^5.46.1",
     "@typescript-eslint/parser": "^5.46.1",
     "@vueuse/core": "^9.7.0",
-    "dayjs": "^1.11.7",
     "eslint": "^8.29.0",
     "eslint-plugin-vue": "^9.8.0",
     "pinia": "^2.0.28",
-    "tailwindcss-theme-swapper": "^0.6.2",
     "vue": "^3.2.45"
   },
   "devDependencies": {

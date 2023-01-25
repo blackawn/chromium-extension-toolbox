@@ -13,7 +13,7 @@ const fastStore = fast();
 
 </script>
 <template>
-  <div class="flex flex-wrap-reverse mb-4">
+  <div class="flex flex-wrap-reverse flex-1 content-start my-2 py-2 overflow-x-hidden">
     <TransitionGroup
       name="general-web-site"
     >
