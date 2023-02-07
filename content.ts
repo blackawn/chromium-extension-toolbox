@@ -3,19 +3,17 @@ import {
   useChromeRuntimeOnMessage
 } from '~/utils/chrome';
 import { ChromeMessage } from '~/types/chrome.type';
-import { setElementPropertyValue } from '~/utils/element';
 
-function setWebsiteFilter(value: string) {
-  setElementPropertyValue(document.documentElement, {
-    filter: value
-  });
-}
+const insertCSS = 'html, html img, html video, html canvas, html svg, { filter: invert(1); }';
+const styleTag = document.createElement('style');
+styleTag.textContent = insertCSS;
 
 function useWebsiteFilter(status: boolean) {
+
   if (status) {
-    setWebsiteFilter('invert(1)');
+    document.head.appendChild(styleTag);
   } else {
-    setWebsiteFilter('');
+    styleTag.parentNode?.removeChild(styleTag);
   }
 }
 
