@@ -4,7 +4,7 @@ import {
 } from '~/utils/chrome';
 import { ChromeMessage } from '~/types/chrome.type';
 
-const insertCSS = 'html, html img, html video, html canvas, html svg, { filter: invert(1); }';
+const insertCSS = 'html, html img, html video, html canvas, html svg { filter: invert(1); }';
 const styleTag = document.createElement('style');
 styleTag.textContent = insertCSS;
 
